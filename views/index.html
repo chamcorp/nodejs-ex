@@ -156,6 +156,7 @@
 					side: THREE.DoubleSide
 				} );
 				//Alex Select Tee
+				object.name = "number 1";
 				objects.push( object );
 				// cloth mesh alex
 				object = new THREE.Mesh( clothGeometry, clothMaterial );
@@ -169,6 +170,7 @@
 					side: THREE.DoubleSide
 				} );
 				//Alex Select Tee
+				object.name = "number 2";
 				objects.push( object );
 				// cloth mesh alex 2
 				object = new THREE.Mesh( clothGeometry, clothMaterial );
@@ -182,6 +184,7 @@
 					side: THREE.DoubleSide
 				} );
 				//Alex Select Tee
+				object.name = "number 3";
 				objects.push( object );
 				// cloth mesh alex 3
 				object = new THREE.Mesh( clothGeometry, clothMaterial );
@@ -195,6 +198,7 @@
 					side: THREE.DoubleSide
 				} );
 				//Alex Select Tee
+				object.name = "number 4";
 				objects.push( object );
 				// sphere
 				var ballGeo = new THREE.SphereGeometry( ballSize, 20, 20 );
@@ -439,7 +443,7 @@
 				var intersects = raycaster.intersectObjects( objects );
 				if ( intersects.length > 0 ) {
 					console.log("hit");
-					console.log(intersects[0].id);
+					console.log(intersects[0].name);
 				}
 			}
 		</script>
