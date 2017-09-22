@@ -359,6 +359,7 @@
 				renderer.shadowMap.enabled = true;
 				// controls
 				var controls = new THREE.OrbitControls( camera, renderer.domElement );
+				controls.target.set(0,0,-500);
 				controls.maxPolarAngle = Math.PI * 0.5;
 				controls.minDistance = 1000;
 				controls.maxDistance = 7500;
