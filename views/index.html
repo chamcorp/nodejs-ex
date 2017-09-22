@@ -85,6 +85,11 @@
 			var clothGeometry;
 			var sphere;
 			var object;
+			//Alex Select Tee
+			var raycaster;
+			var mouse;
+			var objects = [];
+			//end Alex Select Tee
 			init();
 			animate();
 			function init() {
@@ -150,6 +155,8 @@
 					fragmentShader: fragmentShader,
 					side: THREE.DoubleSide
 				} );
+				//Alex Select Tee
+				objects.push( object );
 				// cloth mesh alex
 				object = new THREE.Mesh( clothGeometry, clothMaterial );
 				object.position.set( -375, 0, 0 );
@@ -161,6 +168,8 @@
 					fragmentShader: fragmentShader,
 					side: THREE.DoubleSide
 				} );
+				//Alex Select Tee
+				objects.push( object );
 				// cloth mesh alex 2
 				object = new THREE.Mesh( clothGeometry, clothMaterial );
 				object.position.set( 0, 0, -1000 );
@@ -172,7 +181,8 @@
 					fragmentShader: fragmentShader,
 					side: THREE.DoubleSide
 				} );
-				
+				//Alex Select Tee
+				objects.push( object );
 				// cloth mesh alex 3
 				object = new THREE.Mesh( clothGeometry, clothMaterial );
 				object.position.set( -375, 0, -1000 );
@@ -184,6 +194,8 @@
 					fragmentShader: fragmentShader,
 					side: THREE.DoubleSide
 				} );
+				//Alex Select Tee
+				objects.push( object );
 				// sphere
 				var ballGeo = new THREE.SphereGeometry( ballSize, 20, 20 );
 				var ballMaterial = new THREE.MeshPhongMaterial( { color: 0xaaaaaa } );
@@ -368,6 +380,12 @@
     				//controls.lookSpeed = 0.05;
     				//controls.movementSpeed = 50;
 				// performance monitor
+				//Debut Alex Select Tee
+				raycaster = new THREE.Raycaster();
+				mouse = new THREE.Vector2();
+				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+				//End Alex Select Tee
 				stats = new Stats();
 				container.appendChild( stats.dom );
 				//
@@ -406,6 +424,26 @@
 				//camera.lookAt( scene.position );
 				camera.lookAt(new THREE.Vector3(0,0,-500)); //test alex
 				renderer.render( scene, camera );
+			}
+			function onDocumentTouchStart( event ) {
+				event.preventDefault();
+				event.clientX = event.touches[0].clientX;
+				event.clientY = event.touches[0].clientY;
+				onDocumentMouseDown( event );
+			}
+			function onDocumentMouseDown( event ) {
+				event.preventDefault();
+				mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
+				raycaster.setFromCamera( mouse, camera );
+				var intersects = raycaster.intersectObjects( objects );
+				if ( intersects.length > 0 ) {
+					intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+					var particle = new THREE.Sprite( particleMaterial );
+					particle.position.copy( intersects[ 0 ].point );
+					particle.scale.x = particle.scale.y = 16;
+					scene.add( particle );
+				}
 			}
 		</script>
 	</body>
