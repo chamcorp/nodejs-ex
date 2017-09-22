@@ -243,6 +243,40 @@
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
+				// poles alex 2
+				var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
+				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
+				var mesh = new THREE.Mesh( poleGeo, poleMat );
+				mesh.position.x = - 125;
+				mesh.position.y = - 62 -62; //modif
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var mesh = new THREE.Mesh( poleGeo, poleMat );
+				mesh.position.x = 125;
+				mesh.position.y = - 62 -62; //modif
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var mesh = new THREE.Mesh( new THREE.BoxGeometry( 255, 5, 5 ), poleMat );
+				mesh.position.y = - 250 + ( 750 / 2 ) -62; //modif
+				mesh.position.x = 0;
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var gg = new THREE.BoxGeometry( 10, 10, 10 );
+				var mesh = new THREE.Mesh( gg, poleMat );
+				mesh.position.y = - 250 -62; //modif
+				mesh.position.x = 125;
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var mesh = new THREE.Mesh( gg, poleMat );
+				mesh.position.y = - 250 -62; //modif
+				mesh.position.x = - 125;
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
 				// renderer
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
