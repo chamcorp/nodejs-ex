@@ -171,6 +171,18 @@
 					fragmentShader: fragmentShader,
 					side: THREE.DoubleSide
 				} );
+				
+				// cloth mesh alex 3
+				object = new THREE.Mesh( clothGeometry, clothMaterial );
+				object.position.set( -375, 0, -1000 );
+				object.castShadow = true;
+				scene.add( object );
+				object.customDepthMaterial = new THREE.ShaderMaterial( {
+					uniforms: uniforms,
+					vertexShader: vertexShader,
+					fragmentShader: fragmentShader,
+					side: THREE.DoubleSide
+				} );
 				// sphere
 				var ballGeo = new THREE.SphereGeometry( ballSize, 20, 20 );
 				var ballMaterial = new THREE.MeshPhongMaterial( { color: 0xaaaaaa } );
@@ -293,6 +305,45 @@
 				mesh.position.y = - 250; 
 				mesh.position.z = - 1000; //modif
 				mesh.position.x = - 125;
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				// poles alex 3
+				var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
+				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
+				var mesh = new THREE.Mesh( poleGeo, poleMat );
+				mesh.position.x = - 500;
+				mesh.position.y = - 62; 
+				mesh.position.z = - 1000; //modif
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var mesh = new THREE.Mesh( poleGeo, poleMat );
+				mesh.position.x = -250;
+				mesh.position.y = - 62; 
+				mesh.position.z = - 1000; //modif
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var mesh = new THREE.Mesh( new THREE.BoxGeometry( 255, 5, 5 ), poleMat );
+				mesh.position.y = - 250 + ( 750 / 2 );
+				mesh.position.x = -375; 
+				mesh.position.z = - 1000; //modif
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var gg = new THREE.BoxGeometry( 10, 10, 10 );
+				var mesh = new THREE.Mesh( gg, poleMat );
+				mesh.position.y = - 250;
+				mesh.position.x = -250; 
+				mesh.position.z = - 1000; //modif
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var mesh = new THREE.Mesh( gg, poleMat );
+				mesh.position.y = - 250;
+				mesh.position.x = - 500; 
+				mesh.position.z = - 1000; //modif
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
