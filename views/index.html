@@ -37,7 +37,6 @@
 
 		<script src="https://threejs.org/examples/js/Detector.js"></script>
 		<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-		<script src="https://threejs.org/examples/js/renderers/CanvasRenderer.js"></script>
 		<script src="https://threejs.org/examples/js/controls/FirstPersonControls.js"></script>
 		<script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 
@@ -90,7 +89,6 @@
 			var raycaster;
 			var mouse;
 			var objects = [];
-			var particleMaterial;
 			//end Alex Select Tee
 			init();
 			animate();
@@ -383,15 +381,6 @@
     				//controls.movementSpeed = 50;
 				// performance monitor
 				//Debut Alex Select Tee
-				var PI2 = Math.PI * 2;
-				particleMaterial = new THREE.SpriteCanvasMaterial( {
-					color: 0x000000,
-					program: function ( context ) {
-						context.beginPath();
-						context.arc( 0, 0, 0.5, 0, PI2, true );
-						context.fill();
-					}
-				} );
 				raycaster = new THREE.Raycaster();
 				mouse = new THREE.Vector2();
 				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
@@ -449,11 +438,8 @@
 				raycaster.setFromCamera( mouse, camera );
 				var intersects = raycaster.intersectObjects( objects );
 				if ( intersects.length > 0 ) {
-					intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
-					var particle = new THREE.Sprite( particleMaterial );
-					particle.position.copy( intersects[ 0 ].point );
-					particle.scale.x = particle.scale.y = 16;
-					scene.add( particle );
+					console.log("hit");
+					console.log(intersects[0].id);
 				}
 			}
 		</script>
