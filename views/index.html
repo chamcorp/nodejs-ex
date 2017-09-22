@@ -37,6 +37,7 @@
 
 		<script src="https://threejs.org/examples/js/Detector.js"></script>
 		<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+		<script src="https://threejs.org/examples/js/controls/PointerLockControls.js"></script>
 		<script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 
 		<script src="https://threejs.org/examples/js/Cloth.js"></script>
@@ -357,10 +358,12 @@
 				renderer.gammaOutput = true;
 				renderer.shadowMap.enabled = true;
 				// controls
-				var controls = new THREE.OrbitControls( camera, renderer.domElement );
-				controls.maxPolarAngle = Math.PI * 0.5;
-				controls.minDistance = 1000;
-				controls.maxDistance = 7500;
+				//var controls = new THREE.OrbitControls( camera, renderer.domElement );
+				//controls.maxPolarAngle = Math.PI * 0.5;
+				//controls.minDistance = 1000;
+				//controls.maxDistance = 7500;
+				//controls Alex
+				controls = new THREE.PointerLockControls( camera , renderer.domElement );
 				// performance monitor
 				stats = new Stats();
 				container.appendChild( stats.dom );
