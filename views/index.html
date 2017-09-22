@@ -357,12 +357,14 @@
 				renderer.gammaOutput = true;
 				renderer.shadowMap.enabled = true;
 				// controls
-				var controls = new THREE.OrbitControls( camera, renderer.domElement );
-				controls.maxPolarAngle = Math.PI * 0.5;
-				controls.minDistance = 1000;
-				controls.maxDistance = 7500;
+				//var controls = new THREE.OrbitControls( camera, renderer.domElement );
+				//controls.maxPolarAngle = Math.PI * 0.5;
+				//controls.minDistance = 1000;
+				//controls.maxDistance = 7500;
 				//controls Alex
-				//controls = new THREE.PointerLockControls( camera , renderer.domElement );
+				var controls = new THREE.FirstPersonControls( camera, renderer.domElement );
+    				controls.lookSpeed = 0.05;
+    				controls.movementSpeed = 50;
 				// performance monitor
 				stats = new Stats();
 				container.appendChild( stats.dom );
