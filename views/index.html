@@ -447,7 +447,8 @@
 				if ( intersects.length > 0 ) {
 					console.log("hit");
 					console.log(intersects[0].object.name);
-					alert("hit"+intersects[0].object.name);
+					//alert("hit"+intersects[0].object.name);
+					document.getElementById("info").innerHTML = intersects[0].object.name + "selected";
 				}
 			}
 		</script>
