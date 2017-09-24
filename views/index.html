@@ -440,10 +440,14 @@
 				mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
 				mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
 				raycaster.setFromCamera( mouse, camera );
+				for (object_clicked in objects){
+					object_clicked.geometry.computeBoundingSphere();
+				}
 				var intersects = raycaster.intersectObjects( objects );
 				if ( intersects.length > 0 ) {
 					console.log("hit");
 					console.log(intersects[0].object.name);
+					alert("hit"+intersects[0].object.name);
 				}
 			}
 		</script>
