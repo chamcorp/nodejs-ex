@@ -137,17 +137,39 @@
 				var clothMaterial = new THREE.MeshPhongMaterial( {
 					specular: 0x030303,
 					map: clothTexture,
-					side: THREE.DoubleSide,
+					side: THREE.FrontSide, //modif Alex
+					alphaTest: 0.5
+				} );
+				//cloth back material Alex
+				// cloth material
+				var loader2 = new THREE.TextureLoader();
+				//var clothTexture = loader.load( 'https://threejs.org/examples/textures/patterns/circuit_pattern.png' );
+				//var clothTexture = loader.load( 'https://www.redken.co.uk/media/catalog/product/cache/2/image/1800x/040ec09b1e35df139433887a97daa66f/c/u/curvaceous15_ringlet_rgb_1.png' );
+				//var clothTexture = loader.load( 'curvaceous15_ringlet_rgb_2.png' );
+				var clothTexture2 = loader.load( 'pic2.gif' );
+				//var clothTexture = loader.load( 'pic3.png' );
+				clothTexture2.wrapS = clothTexture2.wrapT = THREE.RepeatWrapping;
+				clothTexture2.anisotropy = 16;
+				var clothMaterial2 = new THREE.MeshPhongMaterial( {
+					specular: 0x030303,
+					map: clothTexture2,
+					side: THREE.BackSide,
 					alphaTest: 0.5
 				} );
 				// cloth geometry
 				clothGeometry = new THREE.ParametricGeometry( clothFunction, cloth.w, cloth.h );
 				clothGeometry.dynamic = true;
 				var uniforms = { texture:  { value: clothTexture } };
+				//uniforms texture 2 alex ??
+				//var uniforms = { texture:  { value: clothTexture2 } };
 				var vertexShader = document.getElementById( 'vertexShaderDepth' ).textContent;
 				var fragmentShader = document.getElementById( 'fragmentShaderDepth' ).textContent;
 				// cloth mesh
-				object = new THREE.Mesh( clothGeometry, clothMaterial );
+				//object = new THREE.Mesh( clothGeometry, clothMaterial );
+				//modif alex begins
+				var materials = [clothMaterial , clothMaterial2 ];
+				object = SceneUtils.createMultiMaterialObject( clothGeometry, materials );
+				//modif Alex ends
 				object.position.set( 0, 0, 0 );
 				object.castShadow = true;
 				scene.add( object );
