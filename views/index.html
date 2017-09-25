@@ -171,13 +171,13 @@
 				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
 				//modif Alex ends
 				object.position.set( 0, 0, 0 );
-				object.castShadow = true;
+				object.children[0].castShadow = true;
 				scene.add( object );
 				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
 					uniforms: uniforms,
 					vertexShader: vertexShader,
 					fragmentShader: fragmentShader,
-					side: THREE.FrontSide
+					side: THREE.DoubleSide
 				} );
 				//Alex Select Tee
 				object.children[0].name = "number 1";
