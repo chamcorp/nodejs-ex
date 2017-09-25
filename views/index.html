@@ -38,7 +38,6 @@
 
 		<script src="https://threejs.org/examples/js/Detector.js"></script>
 		<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-		<script src="https://threejs.org/examples/js/controls/FirstPersonControls.js"></script>
 		<script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 
 		<script src="https://threejs.org/examples/js/Cloth.js"></script>
@@ -86,6 +85,7 @@
 			var clothGeometry;
 			var sphere;
 			var object;
+			var controls;
 			//Alex Select Tee
 			var raycaster;
 			var mouse;
@@ -421,10 +421,10 @@
 				renderer.gammaOutput = true;
 				renderer.shadowMap.enabled = true;
 				// controls
-				var controls = new THREE.OrbitControls( camera, renderer.domElement );
+				controls = new THREE.OrbitControls( camera, renderer.domElement );
 				controls.target.set(0,0,-500);
 				controls.maxPolarAngle = Math.PI * 0.5;
-				controls.minDistance = 1000;
+				controls.minDistance = 100;
 				controls.maxDistance = 7500;
 				//controls Alex
 				//var controls = new THREE.FirstPersonControls( camera, renderer.domElement );
