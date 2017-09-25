@@ -127,10 +127,6 @@
 				scene.add( light );
 				// cloth material
 				var loader = new THREE.TextureLoader();
-				//var clothTexture = loader.load( 'https://threejs.org/examples/textures/patterns/circuit_pattern.png' );
-				//var clothTexture = loader.load( 'https://www.redken.co.uk/media/catalog/product/cache/2/image/1800x/040ec09b1e35df139433887a97daa66f/c/u/curvaceous15_ringlet_rgb_1.png' );
-				//var clothTexture = loader.load( 'curvaceous15_ringlet_rgb_2.png' );
-				//var clothTexture = loader.load( 'pic2.gif' );
 				var clothTexture = loader.load( 'pic3.png' );
 				clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
 				clothTexture.anisotropy = 16;
@@ -141,13 +137,8 @@
 					alphaTest: 0.5
 				} );
 				//cloth back material Alex
-				// cloth material
 				var loader2 = new THREE.TextureLoader();
-				//var clothTexture = loader.load( 'https://threejs.org/examples/textures/patterns/circuit_pattern.png' );
-				//var clothTexture = loader.load( 'https://www.redken.co.uk/media/catalog/product/cache/2/image/1800x/040ec09b1e35df139433887a97daa66f/c/u/curvaceous15_ringlet_rgb_1.png' );
-				//var clothTexture = loader.load( 'curvaceous15_ringlet_rgb_2.png' );
 				var clothTexture2 = loader.load( 'pic2.gif' );
-				//var clothTexture = loader.load( 'pic3.png' );
 				clothTexture2.wrapS = clothTexture2.wrapT = THREE.RepeatWrapping;
 				clothTexture2.anisotropy = 16;
 				var clothMaterial2 = new THREE.MeshPhongMaterial( {
@@ -160,8 +151,6 @@
 				clothGeometry = new THREE.ParametricGeometry( clothFunction, cloth.w, cloth.h );
 				clothGeometry.dynamic = true;
 				var uniforms = { texture:  { value: clothTexture } };
-				//uniforms texture 2 alex ??
-				//var uniforms = { texture:  { value: clothTexture2 } };
 				var vertexShader = document.getElementById( 'vertexShaderDepth' ).textContent;
 				var fragmentShader = document.getElementById( 'fragmentShaderDepth' ).textContent;
 				// cloth mesh
@@ -184,11 +173,13 @@
 				object.children[0].name = "number 1";
 				objects.push( object.children[0] );
 				// cloth mesh alex
-				object = new THREE.Mesh( clothGeometry, clothMaterial );
-				object.position.set( -375, 0, 0 );
-				object.castShadow = true;
+				var materials = [clothMaterial , clothMaterial2 ];
+				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
+				object.position.set( 0, 0, 0 );
+				object.children[0].castShadow = true;
+				object.children[1].castShadow = true;
 				scene.add( object );
-				object.customDepthMaterial = new THREE.ShaderMaterial( {
+				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
 					uniforms: uniforms,
 					vertexShader: vertexShader,
 					fragmentShader: fragmentShader,
@@ -198,11 +189,13 @@
 				object.name = "number 2";
 				objects.push( object );
 				// cloth mesh alex 2
-				object = new THREE.Mesh( clothGeometry, clothMaterial );
-				object.position.set( 0, 0, -1000 );
-				object.castShadow = true;
+				var materials = [clothMaterial2 , clothMaterial ];
+				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
+				object.position.set( 0, 0, 0 );
+				object.children[0].castShadow = true;
+				object.children[1].castShadow = true;
 				scene.add( object );
-				object.customDepthMaterial = new THREE.ShaderMaterial( {
+				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
 					uniforms: uniforms,
 					vertexShader: vertexShader,
 					fragmentShader: fragmentShader,
@@ -212,11 +205,13 @@
 				object.name = "number 3";
 				objects.push( object );
 				// cloth mesh alex 3
-				object = new THREE.Mesh( clothGeometry, clothMaterial );
-				object.position.set( -375, 0, -1000 );
-				object.castShadow = true;
+				var materials = [clothMaterial2 , clothMaterial ];
+				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
+				object.position.set( 0, 0, 0 );
+				object.children[0].castShadow = true;
+				object.children[1].castShadow = true;
 				scene.add( object );
-				object.customDepthMaterial = new THREE.ShaderMaterial( {
+				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
 					uniforms: uniforms,
 					vertexShader: vertexShader,
 					fragmentShader: fragmentShader,
