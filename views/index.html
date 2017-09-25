@@ -173,15 +173,15 @@
 				object.position.set( 0, 0, 0 );
 				object.castShadow = true;
 				scene.add( object );
-				object.customDepthMaterial = new THREE.ShaderMaterial( {
+				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
 					uniforms: uniforms,
 					vertexShader: vertexShader,
 					fragmentShader: fragmentShader,
-					side: THREE.DoubleSide
+					side: THREE.FrontSide
 				} );
 				//Alex Select Tee
 				object.name = "number 1";
-				objects.push( object );
+				objects.push( object.children[0] );
 				// cloth mesh alex
 				object = new THREE.Mesh( clothGeometry, clothMaterial );
 				object.position.set( -375, 0, 0 );
