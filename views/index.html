@@ -498,9 +498,9 @@
 					console.log(intersects[0].object.name);
 					//alert("hit"+intersects[0].object.name);
 					document.getElementById("info").innerHTML = intersects[0].object.name + " is selected";
-					camera.lookAt(intersects[0].object.position);
-					controls.target= intersects[0].object.position.clone();
-					camera.position = intersects[0].object.position.clone().sub(new THREE.Vector3(0,300,-900));
+					camera.lookAt(intersects[0].object.parent.position);
+					controls.target= intersects[0].object.parent.position.clone();
+					camera.position = intersects[0].object.parent.position.clone().add(new THREE.Vector3(0,300,-900));
 					controls.update();
 				}
 			}
