@@ -172,6 +172,7 @@
 				//modif Alex ends
 				object.position.set( 0, 0, 0 );
 				object.children[0].castShadow = true;
+				object.children[1].castShadow = true;
 				scene.add( object );
 				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
 					uniforms: uniforms,
@@ -185,8 +186,7 @@
 				// cloth mesh alex
 				object = new THREE.Mesh( clothGeometry, clothMaterial );
 				object.position.set( -375, 0, 0 );
-				object.children[0].castShadow = true;
-				object.children[1].castShadow = true;
+				object.castShadow = true;
 				scene.add( object );
 				object.customDepthMaterial = new THREE.ShaderMaterial( {
 					uniforms: uniforms,
