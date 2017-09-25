@@ -137,7 +137,6 @@
 					alphaTest: 0.5
 				} );
 				//cloth back material Alex
-				var loader2 = new THREE.TextureLoader();
 				var clothTexture2 = loader.load( 'pic2.gif' );
 				clothTexture2.wrapS = clothTexture2.wrapT = THREE.RepeatWrapping;
 				clothTexture2.anisotropy = 16;
@@ -145,6 +144,26 @@
 					specular: 0x030303,
 					map: clothTexture2,
 					side: THREE.BackSide,
+					alphaTest: 0.5
+				} );				
+				// cloth material 3
+				var clothTexture3 = loader.load( 'pic3.png' );
+				clothTexture3.wrapS = clothTexture3.wrapT = THREE.RepeatWrapping;
+				clothTexture3.anisotropy = 16;
+				var clothMaterial3 = new THREE.MeshPhongMaterial( {
+					specular: 0x030303,
+					map: clothTexture3,
+					side: THREE.BackSide, //modif Alex
+					alphaTest: 0.5
+				} );
+				//cloth back material 4
+				var clothTexture4 = loader.load( 'pic2.gif' );
+				clothTexture4.wrapS = clothTexture4.wrapT = THREE.RepeatWrapping;
+				clothTexture4.anisotropy = 16;
+				var clothMaterial4 = new THREE.MeshPhongMaterial( {
+					specular: 0x030303,
+					map: clothTexture4,
+					side: THREE.FrontSide,
 					alphaTest: 0.5
 				} );
 				// cloth geometry
@@ -189,7 +208,7 @@
 				object.children[0].name = "number 2";
 				objects.push( object.children[0] );
 				// cloth mesh alex 2
-				var materials = [clothMaterial2 , clothMaterial ];
+				var materials = [clothMaterial3 , clothMaterial4 ];
 				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
 				object.position.set( 0, 0, -1000 );
 				object.children[0].castShadow = true;
@@ -205,7 +224,7 @@
 				object.children[0].name = "number 3";
 				objects.push( object.children[0] );
 				// cloth mesh alex 3
-				var materials = [clothMaterial2 , clothMaterial ];
+				var materials = [clothMaterial3 , clothMaterial4 ];
 				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
 				object.position.set( -375, 0, -1000 );
 				object.children[0].castShadow = true;
