@@ -500,7 +500,7 @@
 					document.getElementById("info").innerHTML = intersects[0].object.name + " is selected";
 					camera.lookAt(intersects[0].object.parent.position);
 					controls.target= intersects[0].object.parent.position.clone();
-					camera.position = intersects[0].object.parent.position.clone().add(new THREE.Vector3(0,300,-900));
+					camera.position.set(intersects[0].object.parent.position.x, intersects[0].object.parent.position.y + 300, intersects[0].object.parent.position.z -900);
 					controls.update();
 				}
 			}
