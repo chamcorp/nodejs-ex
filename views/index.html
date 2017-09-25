@@ -175,7 +175,7 @@
 				// cloth mesh alex
 				var materials = [clothMaterial , clothMaterial2 ];
 				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
-				object.position.set( 0, 0, 0 );
+				object.position.set( -375, 0, 0 );
 				object.children[0].castShadow = true;
 				object.children[1].castShadow = true;
 				scene.add( object );
@@ -186,12 +186,12 @@
 					side: THREE.DoubleSide
 				} );
 				//Alex Select Tee
-				object.name = "number 2";
-				objects.push( object );
+				object.children[0].name = "number 2";
+				objects.push( object.children[0] );
 				// cloth mesh alex 2
 				var materials = [clothMaterial2 , clothMaterial ];
 				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
-				object.position.set( 0, 0, 0 );
+				object.position.set( 0, 0, -1000 );
 				object.children[0].castShadow = true;
 				object.children[1].castShadow = true;
 				scene.add( object );
@@ -202,12 +202,12 @@
 					side: THREE.DoubleSide
 				} );
 				//Alex Select Tee
-				object.name = "number 3";
-				objects.push( object );
+				object.children[0].name = "number 3";
+				objects.push( object.children[0] );
 				// cloth mesh alex 3
 				var materials = [clothMaterial2 , clothMaterial ];
 				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
-				object.position.set( 0, 0, 0 );
+				object.position.set( -375, 0, -1000 );
 				object.children[0].castShadow = true;
 				object.children[1].castShadow = true;
 				scene.add( object );
@@ -218,8 +218,8 @@
 					side: THREE.DoubleSide
 				} );
 				//Alex Select Tee
-				object.name = "number 4";
-				objects.push( object );
+				object.children[0].name = "number 4";
+				objects.push( object.children[0] );
 				// sphere
 				var ballGeo = new THREE.SphereGeometry( ballSize, 20, 20 );
 				var ballMaterial = new THREE.MeshPhongMaterial( { color: 0xaaaaaa } );
