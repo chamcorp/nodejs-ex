@@ -108,7 +108,6 @@
 				camera.position.x = 2000;
 				camera.position.y = 50;
 				camera.position.z = -500;
-				camera.lookAt(new THREE.Vector3(0,0,-500)); //test alex
 				scene.add( camera );
 				// lights
 				var light, materials;
@@ -428,6 +427,8 @@
 				controls.minDistance = 500;
 				controls.maxDistance = 7500;
 				controls.enablePan = false;
+				camera.lookAt(new THREE.Vector3(0,0,-500)); //test alex
+				controls.update();
 				//controls Alex
 				//var controls = new THREE.FirstPersonControls( camera, renderer.domElement );
     				//controls.lookSpeed = 0.05;
