@@ -108,6 +108,7 @@
 				camera.position.x = 2000;
 				camera.position.y = 50;
 				camera.position.z = -500;
+				camera.lookAt(new THREE.Vector3(0,0,-500)); //test alex
 				scene.add( camera );
 				// lights
 				var light, materials;
@@ -474,7 +475,6 @@
 				clothGeometry.verticesNeedUpdate = true;
 				sphere.position.copy( ballPosition );
 				//camera.lookAt( scene.position );
-				//camera.lookAt(new THREE.Vector3(0,0,-500)); //test alex
 				renderer.render( scene, camera );
 			}
 			function onDocumentTouchStart( event ) {
@@ -497,6 +497,10 @@
 					console.log(intersects[0].object.name);
 					//alert("hit"+intersects[0].object.name);
 					document.getElementById("info").innerHTML = intersects[0].object.name + " is selected";
+					camera.lookAt(intersects[0].object.position);
+					controls.target= intersects[0].object.position.clone();
+					camera.position = intersects[0].object.position.clone().sub(new THREE.Vector3(0,300,-900));
+					controls.update();
 				}
 			}
 		</script>
