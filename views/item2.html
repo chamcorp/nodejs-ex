@@ -282,6 +282,7 @@
 				waterNormals = new THREE.TextureLoader().load( 'waternormals.jpg' );
 				waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
 
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				water = new THREE.Water( renderer, camera, scene, {
 					textureWidth: 512,
 					textureHeight: 512,
@@ -451,7 +452,7 @@
 				mesh.castShadow = true;
 				scene.add( mesh );
 				// renderer
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				//renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.shadowMap.renderSingleSided = false;
