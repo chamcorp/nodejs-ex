@@ -515,6 +515,11 @@
 				clothGeometry.verticesNeedUpdate = true;
 				sphere.position.copy( ballPosition );
 				//camera.lookAt( scene.position );
+				//Alex Ocean
+				var time = performance.now() * 0.001;
+				water.material.uniforms.time.value += 1.0 / 60.0;
+				water.render();
+				//end Alex Ocean
 				renderer.render( scene, camera );
 			}
 			function onDocumentTouchStart( event ) {
