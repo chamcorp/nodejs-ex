@@ -27,8 +27,8 @@
 	</head>
 
 	<body>
-		<div id="info">Item 1<a onclick="wind = !wind;">Next Item</a><br/>
-			Windy Prairie <span id="selected" hidden>| </span><br/>
+		<div id="info">Item 1<a onclick="wind = !wind;"> | Next Item</a><br/>
+			Windy Prairie <span id="selected" ></span><br/>
 			<a onclick="wind = !wind;">Wind</a> <!--|
 			<a onclick="sphere.visible = !sphere.visible;">Ball</a> |-->
 			<!--<a onclick="togglePins();">Pins</a>-->
@@ -497,8 +497,7 @@
 					console.log("hit");
 					console.log(intersects[0].object.name);
 					//alert("hit"+intersects[0].object.name);
-					document.getElementById("selected").innerHTML = intersects[0].object.name + " is selected";
-					document.getElementById("selected").removeAttribute("hidden");
+					document.getElementById("selected").innerHTML = "| " + intersects[0].object.name + " is selected";
 					camera.lookAt(intersects[0].object.parent.position);
 					controls.target= intersects[0].object.parent.position.clone();
 					camera.position.set(intersects[0].object.parent.position.x, intersects[0].object.parent.position.y + 300, intersects[0].object.parent.position.z -900);
