@@ -41,6 +41,7 @@
 		<script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 
 		<script src="https://threejs.org/examples/js/Cloth.js"></script>
+		<script src="https://threejs.org/examples/js/WaterShader.js"></script>
 
 		<script type="x-shader/x-fragment" id="fragmentShaderDepth">
 			#include <packing>
@@ -91,6 +92,9 @@
 			var mouse;
 			var objects = [];
 			//end Alex Select Tee
+			//Alex ocean
+			var waterNormals, water;
+			//end Alex Ocean
 			init();
 			animate();
 			function init() {
@@ -255,16 +259,42 @@
 				sphere.receiveShadow = true;
 				scene.add( sphere );
 				// ground
-				var groundTexture = loader.load( 'https://threejs.org/examples/textures/terrain/grasslight-big.jpg' );
-				groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
-				groundTexture.repeat.set( 25, 25 );
-				groundTexture.anisotropy = 16;
-				var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, map: groundTexture } );
-				var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 20000, 20000 ), groundMaterial );
-				mesh.position.y = - 250;
-				mesh.rotation.x = - Math.PI / 2;
-				mesh.receiveShadow = true;
-				scene.add( mesh );
+				//var groundTexture = loader.load( 'https://threejs.org/examples/textures/terrain/grasslight-big.jpg' );
+				//groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
+				//groundTexture.repeat.set( 25, 25 );
+				//groundTexture.anisotropy = 16;
+				//var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, map: groundTexture } );
+				//var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 20000, 20000 ), groundMaterial );
+				//mesh.position.y = - 250;
+				//mesh.rotation.x = - Math.PI / 2;
+				//mesh.receiveShadow = true;
+				//scene.add( mesh );
+				//Alex ocean
+				waterNormals = new THREE.TextureLoader().load( 'waternormals.jpg' );
+				waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+
+				water = new THREE.Water( renderer, camera, scene, {
+					textureWidth: 512,
+					textureHeight: 512,
+					waterNormals: waterNormals,
+					alpha: 	1.0,
+					sunDirection: light.position.clone().normalize(),
+					sunColor: 0xffffff,
+					waterColor: 0x001e0f,
+					distortionScale: 50.0,
+					fog: scene.fog != undefined
+				} );
+
+
+				var mirrorMesh = new THREE.Mesh(
+					new THREE.PlaneBufferGeometry( parameters.width * 500, parameters.height * 500 ),
+					water.material
+				);
+
+				mirrorMesh.add( water );
+				mirrorMesh.rotation.x = - Math.PI * 0.5;
+				scene.add( mirrorMesh );
+
 				// poles
 				var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
 				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
