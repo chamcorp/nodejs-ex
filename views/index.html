@@ -500,7 +500,12 @@
 					document.getElementById("selected").innerHTML = "| " + intersects[0].object.name + " is selected";
 					camera.lookAt(intersects[0].object.parent.position);
 					controls.target= intersects[0].object.parent.position.clone();
-					camera.position.set(intersects[0].object.parent.position.x, intersects[0].object.parent.position.y + 300, intersects[0].object.parent.position.z -900);
+					if(intersects[0].object.name == "number 3" || intersects[0].object.name == "number 4"){
+						camera.position.set(intersects[0].object.parent.position.x, intersects[0].object.parent.position.y + 300, intersects[0].object.parent.position.z -900);
+					}
+					else{
+						camera.position.set(intersects[0].object.parent.position.x, intersects[0].object.parent.position.y + 300, intersects[0].object.parent.position.z 900);
+					}
 					controls.update();
 				}
 			}
