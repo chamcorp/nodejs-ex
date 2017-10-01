@@ -486,7 +486,7 @@
 			}
 			function onDocumentTouchStart( event ) {
 				event.preventDefault();
-				if(event.target.id=="nextItem" || event.target.id=="form" || event.target.id=="wind"){
+				if(event.target.id=="nextItem" || event.target.id=="wind" || event.target.parentElement.id=="form" || event.target.parentElement.parentElement.id =="form"){
 					event.target.click();
 				}
 				else{
