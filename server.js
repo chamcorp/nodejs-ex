@@ -82,7 +82,7 @@ app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
   var sessData = req.session;
-  if(!req.session){
+  if(req.session){
     sessData.someAttribute = req.sessionID;
   }
   if (!db) {
@@ -123,7 +123,7 @@ app.get('/pagecount', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
   var sessData = req.session;
-  if(!req.session){
+  if(req.session){
     sessData.someAttribute = "bar";
   }
   if (!db) {
