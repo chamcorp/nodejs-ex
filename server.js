@@ -5,6 +5,10 @@ var express = require('express'),
     eps     = require('ejs'),
     morgan  = require('morgan');
 
+//session
+var session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
 //Stripe add
 //const keyPublishable = process.env.PUBLISHABLE_KEY;
 //const keySecret = process.env.SECRET_KEY;    
@@ -68,6 +72,16 @@ var initDb = function(callback) {
   });
 };
 
+//session
+initDb(function(err){});
+if (db) {
+	app.use(session({
+		secret: 'foo',
+		cookie: { maxAge: 2628000000 },
+		store: new MongoStore({ db: db })
+	}));
+}
+
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
@@ -76,6 +90,7 @@ app.get('/', function (req, res) {
   }
   if (db) {
     var col = db.collection('counts');
+    console.log(req.session.id);
     // Create a document with request IP and current time of request
     col.insert({ip: req.ip, date: Date.now()});
     col.count(function(err, count){
