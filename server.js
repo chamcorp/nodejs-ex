@@ -73,7 +73,8 @@ var initDb = function(callback) {
 
     console.log('Connected to MongoDB at: %s', mongoURL);
       
-    app.use(session({store: new MongoStore({ db: db }), secret: 'this-is-a-secret-token', cookie: { maxAge: 60000 }}));
+    app.use(session({store: new MongoStore({ db: db }), secret: 'this-is-a-secret-token', cookie: { maxAge: 60000 }, resave: false, 
+  saveUninitialized: true}));
     console.log('MongoStore started');
   });
 };
