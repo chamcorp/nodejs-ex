@@ -7,7 +7,7 @@ var express = require('express'),
 
 //session
 var session = require('express-session');
-//const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo')(session);
 
 //Stripe add
 //const keyPublishable = process.env.PUBLISHABLE_KEY;
@@ -74,9 +74,6 @@ var initDb = function(callback) {
     console.log('Connected to MongoDB at: %s', mongoURL);
   });
 };
-
-//session
-app.use(session({ secret: 'this-is-a-secret-token', cookie: { maxAge: 60000 }}));
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
@@ -167,6 +164,13 @@ initDb(function(err){
   console.log('Error connecting to Mongo. Message:\n'+err);
 });
 
+//session
+if(db){
+  app.use(session({store: new MongoStore({ db: db }), secret: 'this-is-a-secret-token', cookie: { maxAge: 60000 }}));
+}
+else{
+  console.log('no go');
+}
 app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
 
