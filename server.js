@@ -79,7 +79,7 @@ app.get('/', function (req, res) {
     // Create a document with request IP and current time of request
     col.insert({ip: req.ip, date: Date.now()});
     col.count(function(err, count){
-      res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails });
+      res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails , keyPublishable});
     });
   } else {
     res.render('index.html', { pageCountMessage : null, keyPublishable});
@@ -97,7 +97,7 @@ app.get('/item2', function (req, res) {
     // Create a document with request IP and current time of request
     col.insert({ip: req.ip, date: Date.now()});
     col.count(function(err, count){
-      res.render('item2.html', { pageCountMessage : count, dbInfo: dbDetails });
+      res.render('item2.html', { pageCountMessage : count, dbInfo: dbDetails , keyPublishable});
     });
   } else {
     res.render('item2.html', { pageCountMessage : null});
