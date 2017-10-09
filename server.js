@@ -6,8 +6,8 @@ var express = require('express'),
     morgan  = require('morgan');
 
 //session
-var session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+//var session = require('express-session');
+//const MongoStore = require('connect-mongo')(session);
 
 //Stripe add
 //const keyPublishable = process.env.PUBLISHABLE_KEY;
@@ -52,6 +52,9 @@ var db = null,
     dbDetails = new Object();
 
 var initDb = function(callback) {
+  //TEST
+  //mongoURL = 'mongodb://userTFG:ii6oqwwefYtGfnmP@172.30.37.243:27017/sampledb';
+  //mongoURLLabel ='mongodb://172.30.37.243:27017/sampledb';
   if (mongoURL == null) return;
 
   var mongodb = require('mongodb');
@@ -73,14 +76,14 @@ var initDb = function(callback) {
 };
 
 //session
-initDb(function(err){});
-if (db) {
-	app.use(session({
-		secret: 'foo',
-		cookie: { maxAge: 2628000000 },
-		store: new MongoStore({ db: db })
-	}));
-}
+//initDb(function(err){});
+//if (db) {
+//	app.use(session({
+//		secret: 'foo',
+//		cookie: { maxAge: 2628000000 },
+//		store: new MongoStore({ db: db })
+//	}));
+//}
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
@@ -90,7 +93,7 @@ app.get('/', function (req, res) {
   }
   if (db) {
     var col = db.collection('counts');
-    console.log(req.session.id);
+    //console.log(req.session.id);
     // Create a document with request IP and current time of request
     col.insert({ip: req.ip, date: Date.now()});
     col.count(function(err, count){
