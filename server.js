@@ -72,6 +72,9 @@ var initDb = function(callback) {
     dbDetails.type = 'MongoDB';
 
     console.log('Connected to MongoDB at: %s', mongoURL);
+      
+    app.use(session({store: new MongoStore({ db: db }), secret: 'this-is-a-secret-token', cookie: { maxAge: 60000 }}));
+    console.log('MongoStore started');
   });
 };
 
@@ -164,13 +167,6 @@ initDb(function(err){
   console.log('Error connecting to Mongo. Message:\n'+err);
 });
 
-//session
-if(db){
-  app.use(session({store: new MongoStore({ db: db }), secret: 'this-is-a-secret-token', cookie: { maxAge: 60000 }}));
-}
-else{
-  console.log('no go');
-}
 app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
 
