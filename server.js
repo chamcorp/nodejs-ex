@@ -83,7 +83,7 @@ app.get('/', function (req, res) {
   // initialized.
   var sessData = req.session;
   if(!req.session.someAttribute){
-    sessData.someAttribute = "foo";
+    sessData.someAttribute = req.sessionID;
   }
   if (!db) {
     initDb(function(err){});
