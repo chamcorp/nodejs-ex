@@ -132,7 +132,7 @@ app.get('/pagecount', function (req, res) {
   if (db) {
     db.collection('counts').count(function(err, count ){
       var someAttribute = req.session.someAttribute;
-      res.send('{ pageCount: ' + count + '}' + ' Your sessionID is ' + ${someAttribute} );
+      res.send('{ pageCount: ' + count + '}' + ' Your sessionID is ' + someAttribute );
     });
   } else {
     res.send('{ pageCount: -1 }');
