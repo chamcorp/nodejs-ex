@@ -6,7 +6,7 @@ var express = require('express'),
     morgan  = require('morgan');
 
 //session
-//var session = require('express-session');
+var session = require('express-session');
 //const MongoStore = require('connect-mongo')(session);
 
 //Stripe add
@@ -76,18 +76,15 @@ var initDb = function(callback) {
 };
 
 //session
-//initDb(function(err){});
-//if (db) {
-//	app.use(session({
-//		secret: 'foo',
-//		cookie: { maxAge: 2628000000 },
-//		store: new MongoStore({ db: db })
-//	}));
-//}
+app.use(session({ secret: 'this-is-a-secret-token', cookie: { maxAge: 60000 }}));
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
+  var sessData = req.session;
+  if(!req.session.someAttribute){
+    sessData.someAttribute = "foo";
+  }
   if (!db) {
     initDb(function(err){});
   }
@@ -125,12 +122,17 @@ app.get('/item2', function (req, res) {
 app.get('/pagecount', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
+  var sessData = req.session;
+  if(!req.session.someAttribute){
+    sessData.someAttribute = "bar";
+  }
   if (!db) {
     initDb(function(err){});
   }
   if (db) {
     db.collection('counts').count(function(err, count ){
-      res.send('{ pageCount: ' + count + '}');
+      var someAttribute = req.session.someAttribute;
+      res.send('{ pageCount: ' + count + '}' + ' Your sessionID is ' + ${someAttribute} );
     });
   } else {
     res.send('{ pageCount: -1 }');
