@@ -140,7 +140,7 @@ app.get('/pagecount', function (req, res) {
   // initialized.
   var sessData = req.session;
   if(req.session){
-    sessData.someAttribute = "bar";
+    sessData.someAttribute = req.sessonID;
   }
   if (!db) {
     initDb(function(err){});
