@@ -77,7 +77,11 @@ var initDb = function(callback) {
     dbDetails.type = 'MongoDB';
 
     console.log('Connected to MongoDB at: %s', mongoURL);
-    app.use(session({store: new MongoStore({url : mongoURL}), secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
+     
+    //Session
+    var store = new MongoStore({db : conn});
+    console.log(store.state);
+    app.use(session({store: store, secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
     console.log('MongoStore started');
   });
 };
@@ -86,6 +90,7 @@ app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
   var sessData = req.session;
+  console.log(req.session);
   if(req.session){
     sessData.someAttribute = req.sessionID;
   }
