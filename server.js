@@ -79,7 +79,7 @@ var initDb = function(callback) {
     console.log('Connected to MongoDB at: %s', mongoURL);
      
     //Session
-    var store = new MongoStore({db : conn});
+    var store = new MongoStore({db : conn},function(err){console.log('Error connecting to Mongo. Message:\n'+err);});
     console.log(store.state);
     app.use(session({store: store, secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
     console.log('MongoStore started');
