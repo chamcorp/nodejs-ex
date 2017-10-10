@@ -4,7 +4,7 @@ var express = require('express'),
     app     = express(),
     eps     = require('ejs'),
     morgan  = require('morgan');
-	mongoose = require('mongoose');
+    //mongoose = require('mongoose');
 
 //session
 var session = require('express-session');
@@ -52,24 +52,43 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 var db = null,
     dbDetails = new Object();
 
-mongoose.connect(mongoURL);
-db = mongoose.connection;
-app.use(session({store: new MongoStore({mongooseConnection : db}), secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
-console.log('MongoStore started');
-
+//mongoose.connect(mongoURL);
+//db = mongoose.connection;
+//app.use(session({store: new MongoStore({mongooseConnection : db}), secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
+//console.log('MongoStore started');
+//
 var initDb = function(callback) {
   //TEST
   //mongoURL = 'mongodb://userTFG:ii6oqwwefYtGfnmP@172.30.37.243:27017/sampledb';
   //mongoURLLabel ='mongodb://172.30.37.243:27017/sampledb';
-  //if (mongoURL == null) return;
+  if (mongoURL == null) return;
+ 
+  var mongodb = require('mongodb');
+  if (mongodb == null) return;
+ 
+  mongodb.connect(mongoURL, function(err, conn) {
+    if (err) {
+      callback(err);
+      return;
+    }
+    db = conn;
+    dbDetails.databaseName = db.databaseName;
+    dbDetails.url = mongoURLLabel;
+    dbDetails.type = 'MongoDB';
 
-  //var mongodb = require('mongodb');
-  //if (mongodb == null) return;
+    console.log('Connected to MongoDB at: %s', mongoURL);
+    app.use(session({store: new MongoStore({url : mongoURL}), secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
+    console.log('MongoStore started');
+  });
 };
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
+  var sessData = req.session;
+  if(req.session){
+    sessData.someAttribute = req.sessionID;
+  }
   if (!db) {
     initDb(function(err){});
   }
