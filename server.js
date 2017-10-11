@@ -6,10 +6,6 @@ var express = require('express'),
     morgan  = require('morgan');
     //mongoose = require('mongoose');
 
-//session
-var session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-
 //Stripe add
 //const keyPublishable = process.env.PUBLISHABLE_KEY;
 //const keySecret = process.env.SECRET_KEY;    
@@ -24,6 +20,10 @@ Object.assign=require('object-assign')
 app.engine('html', require('ejs').renderFile);
 app.use(express.static('public'))
 app.use(morgan('combined'))
+
+//session
+var session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
@@ -88,7 +88,8 @@ var initDb = function(callback) {
   });
 };
 
-app.use('/',session({store:new MongoStore({url : mongoURL, collection : 'mySessions', ttl: 14 * 24 * 60 * 60}),secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
+console.lo
+app.use('/',session({store: new MongoStore({url : mongoURL, collection : 'mySessions', ttl: 14 * 24 * 60 * 60}),secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
