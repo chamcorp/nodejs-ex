@@ -93,7 +93,7 @@ app.use(function(req, res, next){
   console.log('alors?');
   if(store){
     console.log('youyou');
-    console.log('storestate2 : 'store.state);
+    console.log('storestate2 : ' + store.state);
     app.use('/',session({store : store, secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
   }
   next();
