@@ -88,7 +88,7 @@ var initDb = function(callback) {
   });
 };
 
-app.use(function (req, res, next) {
+app.use('/',function (req, res, next) {
   console.log("1");
   if (store) {
     console.log("2");
