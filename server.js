@@ -92,14 +92,14 @@ var initDb = function(callback) {
 app.use(function(req, res, next){
   console.log('alors?');
   if(store){
-    console.log('youyou');
-    console.log('storestate2 : ' + store.state);
-    session({store : storfde, secret: 'this-is-a-secret-token', resave: false, saveUninitialized: true});
-    console.log('yo1 : ' + req.session);
-    console.log('yo2 : ' + req.sessionStore);
+    console.log('bah quoi?');
+    req.session=null;
   }
   next();
 });
+
+app.use(session({store : store, secret: 'this-is-a-secret-token', resave: false, saveUninitialized: true}));
+
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
