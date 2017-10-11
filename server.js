@@ -94,7 +94,7 @@ app.use(function(req, res, next){
   if(store){
     console.log('youyou');
     console.log('storestate2 : ' + store.state);
-    session({store : store, secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true});
+    session({store : store, secret: 'this-is-a-secret-token', resave: false, saveUninitialized: true});
     console.log('yo1 : ' + req.session);
     console.log('yo2 : ' + req.sessionStore);
   }
