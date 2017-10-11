@@ -8,6 +8,7 @@
     "chai": "^3.5.0",
     "chai-http": "^2.0.1",
     "connect-mongo": "^2.0.0",
+    "connect-redis": "^3.3.2",
     "ejs": "^2.4.1",
     "express": "^4.16.1",
     "express-session": "^1.15.6",
