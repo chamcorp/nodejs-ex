@@ -81,17 +81,14 @@ var initDb = function(callback) {
     console.log('Connected to MongoDB at: %s', mongoURL);
      
     //Session
-    store = new MongoStore({db : conn, collection : 'mySessions', ttl: 14 * 24 * 60 * 60},function(err){console.log('Error connecting to Mongo. Message:\n'+err);});
-    console.log(store.state);
+    //store = new MongoStore({db : conn, collection : 'mySessions', ttl: 14 * 24 * 60 * 60},function(err){console.log('Error connecting to Mongo. Message:\n'+err);});
+    //console.log(store.state);
     //app.use(session({store: store, secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
-    console.log('MongoStore started');
+    //console.log('MongoStore started');
   });
 };
 
-initDb(function(err){
-  console.log('Error connecting to Mongo. Message:\n'+err);
-});
-app.use('/',session({store:store,secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
+app.use('/',session({store:new MongoStore({url : mongoURL, collection : 'mySessions', ttl: 14 * 24 * 60 * 60}),secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
