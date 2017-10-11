@@ -85,10 +85,10 @@ var initDb = function(callback) {
     console.log(store.state);
     app.use(session({store: store, secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
     console.log('MongoStore started');
+    console.log(mongoURL);
   });
 };
 
-console.log(mongoURL);
 //app.use('/',session({store: new MongoStore({url : mongoURL, collection : 'mySessions', ttl: 14 * 24 * 60 * 60}),secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
 
 app.get('/', function (req, res) {
@@ -184,9 +184,9 @@ app.use(function(err, req, res, next){
   res.status(500).send('Something bad happened!');
 });
 
-//initDb(function(err){
-//  console.log('Error connecting to Mongo. Message:\n'+err);
-//});
+initDb(function(err){
+  console.log('Error connecting to Mongo. Message:\n'+err);
+});
 
 app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
