@@ -92,9 +92,11 @@ var initDb = function(callback) {
 //if(storeAlex){
 //  app.use(session({store : storeAlex, secret: 'this-is-a-secret-token', resave: false, saveUninitialized: true}));
 //}
-app.use(session({
+app.use('/item2',session({
     store: new RedisStore({host:'redis-18915.c15.us-east-1-2.ec2.cloud.redislabs.com',port: '18915'}),
-    secret: 'keyboard cat'
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
 }));
 
 
