@@ -88,7 +88,7 @@ var initDb = function(callback) {
   });
 };
 
-app.use(session({store:new MongoStore({url:mongoURL}) , secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
+app.use(session({store:new MongoStore({store:store}) , secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
