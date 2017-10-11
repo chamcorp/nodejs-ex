@@ -6,6 +6,10 @@ var express = require('express'),
     morgan  = require('morgan');
     //mongoose = require('mongoose');
 
+//session
+var session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
 //Stripe add
 //const keyPublishable = process.env.PUBLISHABLE_KEY;
 //const keySecret = process.env.SECRET_KEY;    
@@ -20,10 +24,6 @@ Object.assign=require('object-assign')
 app.engine('html', require('ejs').renderFile);
 app.use(express.static('public'))
 app.use(morgan('combined'))
-
-//session
-var session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
