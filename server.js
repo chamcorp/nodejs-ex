@@ -89,11 +89,13 @@ var initDb = function(callback) {
   });
 };
 
+var isStoreActive =0;
+
 app.use(function(req, res, next){
   console.log('alors?');
-  if(store){
+  if(isStoreActive==0 && store){
     console.log('bah quoi?');
-    req.session=null;
+    req.sessionStore=store;
   }
   next();
 });
