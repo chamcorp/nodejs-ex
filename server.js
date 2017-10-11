@@ -8,7 +8,8 @@ var express = require('express'),
 
 //session
 var session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+//const MongoStore = require('connect-mongo')(session);
+var RedisStore = require('connect-redis')(session);
 
 //Stripe add
 //const keyPublishable = process.env.PUBLISHABLE_KEY;
@@ -81,17 +82,21 @@ var initDb = function(callback) {
     console.log('Connected to MongoDB at: %s', mongoURL);
      
     //Session
-    storeAlex = new MongoStore({db : conn, collection : 'mySessions', ttl: 14 * 24 * 60 * 60},function(err){console.log('Error connecting to Mongo. Message:\n'+err);});
-    console.log(storeAlex.state);
-    //app.use(session({store: store, secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
-    console.log('MongoStore started');
-    console.log(mongoURL);
+    //storeAlex = new MongoStore({db : conn, collection : 'mySessions', ttl: 14 * 24 * 60 * 60},function(err){console.log('Error connecting to Mongo. Message:\n'+err);});
+    //console.log(storeAlex.state);
+    //console.log('MongoStore started');
+    //console.log(mongoURL);
   });
 };
 
-if(storeAlex){
-  app.use(session({store : storeAlex, secret: 'this-is-a-secret-token', resave: false, saveUninitialized: true}));
-}
+//if(storeAlex){
+//  app.use(session({store : storeAlex, secret: 'this-is-a-secret-token', resave: false, saveUninitialized: true}));
+//}
+app.use(session({
+    store: new RedisStore({host:'redis-18915.c15.us-east-1-2.ec2.cloud.redislabs.com',port: '18915'}),
+    secret: 'keyboard cat'
+}));
+
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
@@ -99,10 +104,10 @@ app.get('/', function (req, res) {
   var sessData = req.session;
   console.log(req.session);
   console.log(req.sessionStore);
-  if(storeAlex){
-    console.log('storestate : ' + storeAlex.state);
-    console.log(storeAlex);
-  }
+  //if(storeAlex){
+  //  console.log('storestate : ' + storeAlex.state);
+  //  console.log(storeAlex);
+  //}
   if(req.session){
     sessData.someAttribute = req.sessionID;
   }
