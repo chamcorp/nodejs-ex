@@ -89,7 +89,9 @@ var initDb = function(callback) {
   });
 };
 
-app.use(session({store : storeAlex, secret: 'this-is-a-secret-token', resave: false, saveUninitialized: true}));
+if(storeAlex){
+  app.use(session({store : storeAlex, secret: 'this-is-a-secret-token', resave: false, saveUninitialized: true}));
+}
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
