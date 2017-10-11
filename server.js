@@ -98,7 +98,7 @@ app.get('/', function (req, res) {
   console.log(req.session);
   console.log(req.sessionStore);
   if(store){
-    console.log('storestate : ' + store.state);
+    console.log('storestate : ' + storeAlex.state);
   }
   if(req.session){
     sessData.someAttribute = req.sessionID;
