@@ -92,8 +92,9 @@ var initDb = function(callback) {
 initDb(function(err){
   console.log('Error connecting to Mongo. Message:\n'+err);
 });
-app.use('/',session({store: new MongoStore({store : store, collection : 'mySessions2', ttl: 14 * 24 * 60 * 60}),secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
-
+if(store){
+  app.use('/',session({store: new MongoStore({store : store, collection : 'mySessions2', ttl: 14 * 24 * 60 * 60}),secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
+}
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
