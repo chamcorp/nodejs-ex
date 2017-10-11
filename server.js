@@ -52,7 +52,7 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 var db = null,
     dbDetails = new Object();
 
-var store = null;
+var storeAlex = null;
 
 //mongoose.connect(mongoURL);
 //db = mongoose.connection;
@@ -81,26 +81,15 @@ var initDb = function(callback) {
     console.log('Connected to MongoDB at: %s', mongoURL);
      
     //Session
-    store = new MongoStore({db : conn, collection : 'mySessions', ttl: 14 * 24 * 60 * 60},function(err){console.log('Error connecting to Mongo. Message:\n'+err);});
-    console.log(store.state);
+    storeAlex = new MongoStore({db : conn, collection : 'mySessions', ttl: 14 * 24 * 60 * 60},function(err){console.log('Error connecting to Mongo. Message:\n'+err);});
+    console.log(storeAlex.state);
     //app.use(session({store: store, secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
     console.log('MongoStore started');
     console.log(mongoURL);
   });
 };
 
-var isStoreActive =0;
-
-app.use(function(req, res, next){
-  console.log('alors?');
-  if(isStoreActive==0 && store){
-    console.log('bah quoi?');
-    req.sessionStore=store;
-  }
-  next();
-});
-
-app.use(session({store : store, secret: 'this-is-a-secret-token', resave: false, saveUninitialized: true}));
+app.use(session({store : storeAlex, secret: 'this-is-a-secret-token', resave: false, saveUninitialized: true}));
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
