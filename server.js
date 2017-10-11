@@ -93,7 +93,8 @@ app.use(function(req, res, next){
   console.log('alors?');
   if(store){
     console.log('youyou');
-    app.use('/',session({store: new MongoStore({store : store, collection : 'mySessions2', ttl: 14 * 24 * 60 * 60}),secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
+    console.log('storestate2 : 'store.state);
+    app.use('/',session({store : store, secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
   }
   next();
 });
