@@ -88,7 +88,14 @@ var initDb = function(callback) {
   });
 };
 
-app.use(session({store:store , secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
+app.use(function (req, res, next) {
+  console.log("1");
+  if (store) {
+    console.log("2");
+    app.use(session({store:store , secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
+  }
+  next()
+})
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
