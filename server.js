@@ -89,24 +89,7 @@ var initDb = function(callback) {
   });
 };
 
-//Readiness Liveness Probe Tests
-app.get('/test', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-  if (!db) {
-    initDb(function(err){});
-  }
-  if (db) {
-    db.collection('counts').count(function(err, count ){
-        var someAttribute ='';
-      res.send('{ pageCount: ' + count + '}');
-    });
-  } else {
-    res.send('{ pageCount: -1 }');
-  }
-});
-
-app.use(session({
+app.use('/item',session({
     store: new RedisStore({host:'redis-18915.c15.us-east-1-2.ec2.cloud.redislabs.com',port: '18915'}),
     secret: 'keyboard cat',
     resave: false,
