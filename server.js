@@ -106,7 +106,7 @@ app.get('/test', function (req, res) {
   }
 });
 
-app.use('/^(?!\/pagecount).*/',session({
+app.use(session({
     store: new RedisStore({host:'redis-18915.c15.us-east-1-2.ec2.cloud.redislabs.com',port: '18915'}),
     secret: 'keyboard cat',
     resave: false,
