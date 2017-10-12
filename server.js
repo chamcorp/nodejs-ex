@@ -4,11 +4,9 @@ var express = require('express'),
     app     = express(),
     eps     = require('ejs'),
     morgan  = require('morgan');
-    //mongoose = require('mongoose');
 
 //session
 var session = require('express-session');
-//const MongoStore = require('connect-mongo')(session);
 var RedisStore = require('connect-redis')(session);
 
 //Stripe add
@@ -53,13 +51,6 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 var db = null,
     dbDetails = new Object();
 
-var storeAlex = null;
-
-//mongoose.connect(mongoURL);
-//db = mongoose.connection;
-//app.use(session({store: new MongoStore({mongooseConnection : db}), secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }, resave: false, saveUninitialized: true}));
-//console.log('MongoStore started');
-//
 var initDb = function(callback) {
   //TEST
   //mongoURL = 'mongodb://userTFG:ii6oqwwefYtGfnmP@172.30.37.243:27017/sampledb';
@@ -80,16 +71,10 @@ var initDb = function(callback) {
     dbDetails.type = 'MongoDB';
 
     console.log('Connected to MongoDB at: %s', mongoURL);
-     
-    //Session
-    //storeAlex = new MongoStore({db : conn, collection : 'mySessions', ttl: 14 * 24 * 60 * 60},function(err){console.log('Error connecting to Mongo. Message:\n'+err);});
-    //console.log(storeAlex.state);
-    //console.log('MongoStore started');
-    //console.log(mongoURL);
   });
 };
 
-app.use('/item',session({
+app.use('/',session({
     store: new RedisStore({host:'redis-18915.c15.us-east-1-2.ec2.cloud.redislabs.com',port: '18915'}),
     secret: 'keyboard cat',
     resave: false,
@@ -100,22 +85,12 @@ app.use('/item',session({
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
-  var sessData = req.session;
-  console.log(req.session);
-  console.log(req.sessionStore);
-  //if(storeAlex){
-  //  console.log('storestate : ' + storeAlex.state);
-  //  console.log(storeAlex);
-  //}
-  if(req.session){
-    sessData.someAttribute = req.sessionID;
-  }
+  console.log(req.sessionID);
   if (!db) {
     initDb(function(err){});
   }
   if (db) {
     var col = db.collection('counts');
-    //console.log(req.session.id);
     // Create a document with request IP and current time of request
     col.insert({ip: req.ip, date: Date.now()});
     col.count(function(err, count){
@@ -129,6 +104,7 @@ app.get('/', function (req, res) {
 app.get('/item2', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
+  console.log(req.sessionID);
   if (!db) {
     initDb(function(err){});
   }
@@ -147,6 +123,7 @@ app.get('/item2', function (req, res) {
 app.get('/pagecount', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
+  console.log(req.sessionID);
   var sessData = req.session;
   if(req.session){
     sessData.someAttribute = req.sessionID;
