@@ -128,6 +128,10 @@ app.get('/pagecount', function (req, res) {
   var sessData = req.session;
   if(req.session){
     sessData.someAttribute = req.sessionID;
+    if(req.headers['user-agent'] == 'Go-http-client/1.1'){
+        req.sessionStore.destroy(req.sessionID, function(error){if(error){console.log('Error while destroying session' + error);} else{console.log('session destroyed');}})
+        console.log(req.sessionID);
+    }
   }
   if (!db) {
     initDb(function(err){});
