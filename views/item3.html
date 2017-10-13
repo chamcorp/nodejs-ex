@@ -461,8 +461,8 @@
 			function makeTextSprite( message, parameters )
 			{
 				// Alignment enums
-				THREE.SpriteAlignment = {};
-				THREE.SpriteAlignment.topLeft = new THREE.Vector2( 1, -1 );
+				//THREE.SpriteAlignment = {};
+				//THREE.SpriteAlignment.topLeft = new THREE.Vector2( 1, -1 );
 				if ( parameters === undefined ) parameters = {};
 
 				var fontface = parameters.hasOwnProperty("fontface") ? 
@@ -480,7 +480,7 @@
 				var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?
 					parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
 
-				var spriteAlignment = THREE.SpriteAlignment.topLeft;
+				var spriteAlignment = new THREE.Vector2( 1, -1 );
 
 				var canvas = document.createElement('canvas');
 				var context = canvas.getContext('2d');
