@@ -101,6 +101,11 @@ app.get('/', function (req, res) {
   }
 });
 
+app.get('/login',
+  function(req, res){
+    res.render('login');
+});
+
 app.get('/item2', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
