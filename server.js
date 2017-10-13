@@ -116,7 +116,7 @@ app.get('/item2', function (req, res) {
       res.render('item2.html', { pageCountMessage : count, dbInfo: dbDetails , keyPublishable});
     });
   } else {
-    res.render('item2.html', { pageCountMessage : null});
+    res.render('item2.html', { pageCountMessage : null, keyPublishable});
   }
 });
 
@@ -135,7 +135,7 @@ app.get('/item3', function (req, res) {
       res.render('item3.html', { pageCountMessage : count, dbInfo: dbDetails , keyPublishable});
     });
   } else {
-    res.render('item3.html', { pageCountMessage : null});
+    res.render('item3.html', { pageCountMessage : null, keyPublishable});
   }
 });
 
