@@ -186,6 +186,11 @@ app.post("/charge", (req, res) => {
   .then(charge => res.render("charge.html"));
 });
 
+//Ajax send
+app.post("/ajax", (req, res) => {
+    
+});
+
 // error handling
 app.use(function(err, req, res, next){
   console.error(err.stack);
