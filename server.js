@@ -188,7 +188,7 @@ app.post("/charge", (req, res) => {
 
 //Ajax send
 app.post("/ajax", (req, res) => {
-    
+    console.log(req.body);
 });
 
 // error handling
