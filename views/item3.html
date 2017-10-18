@@ -102,7 +102,7 @@
 			var mouse;
 			var objects = [];
 			var selectedTee= '';
-			var spriteyCart;
+			var spriteyCartPosition=new THREE.Vector3( );
 			//end Alex Select Tee
 			init();
 			animate();
@@ -432,6 +432,7 @@
 				//Shopping Cart Text
 				var spriteyCart = makeTextSprite( " My Selection ", { fontsize: 72, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
 				spriteyCart.position.set(-10000,400,-500);
+				spriteyCartPosition=spriteyCart.position;
 				scene.add( spriteyCart );
 				// renderer
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -623,8 +624,8 @@
 				req.send("variable="+productname); 
 			}
 			function goToCart() {
-				camera.lookAt(spriteyCart.position);
-				camera.position.set(spriteyCart.position.x,spriteyCart.position.y +4000 ,spriteyCart.position.z);
+				camera.lookAt(spriteyCartPosition);
+				camera.position.set(spriteyCartPosition.x,spriteyCartPosition.y +4000 ,spriteyCartPosition.z);
 				controls.update();
 			}
 		</script>
