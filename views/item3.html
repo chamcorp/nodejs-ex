@@ -624,7 +624,7 @@
 			}
 			function goToCart() {
 				camera.lookAt(spriteyCart);
-				camera.position.set(-10000,4000,-500);
+				camera.position.set(spriteyCart.position.x,spriteyCart.position.y +4000 ,spriteyCart.position.z);
 				controls.update();
 			}
 		</script>
