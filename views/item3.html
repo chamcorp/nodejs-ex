@@ -30,15 +30,16 @@
 	<body>
 		<div id="info">Item 1 | <a id="nextItem" href="/item2">Next Item</a><br/>
 			Windy Prairie <span id="selected" ></span><br/>
-			<a id ="wind" onclick="wind = !wind;">Wind</a> <!--|
+			<a id ="wind" onclick="wind = !wind;">Wind</a> | 
+			<a id ="addToCartButton" onclick="addToCart(selectedTee);" hidden>Add to Cart</a><!--|
 			<a onclick="sphere.visible = !sphere.visible;">Ball</a> |-->
 			<!--<a onclick="togglePins();">Pins</a>-->
-			<form id="form" action="/charge" method="post">
+			<!--<form id="form" action="/charge" method="post">
 				<article>
 					<label>Amount: $5.00</label>
 				</article>
 				<script src="//checkout.stripe.com/v2/checkout.js" data-key=<%= keyPublishable %> data-locale="auto" data-description="Sample Charge" data-amount="500" class="stripe-button"></script>
-			</form>
+			</form>-->
 		</div>
 
 		<script src="https://threejs.org/build/three.js"></script>
@@ -97,6 +98,7 @@
 			var raycaster;
 			var mouse;
 			var objects = [];
+			var selectedTee= '';
 			//end Alex Select Tee
 			init();
 			animate();
@@ -589,10 +591,11 @@
 				var intersects = raycaster.intersectObjects( objects );
 				if ( intersects.length > 0 ) {
 					console.log("hit");
-					addToCart(intersects[0].object.name);
+					selectedTee = intersects[0].object.name;
 					console.log(intersects[0].object.name);
 					//alert("hit"+intersects[0].object.name);
 					document.getElementById("selected").innerHTML = "| " + intersects[0].object.name + " is selected";
+					document.getElementById("addToCartButton").removeAttribute("hidden");
 					camera.lookAt(intersects[0].object.parent.position);
 					controls.target= intersects[0].object.parent.position.clone();
 					if(intersects[0].object.name == "number 3" || intersects[0].object.name == "number 4"){
