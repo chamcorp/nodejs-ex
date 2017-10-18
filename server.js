@@ -200,6 +200,7 @@ app.post("/ajax", (req, res) => {
         console.log(req.body.variable);
         someAttribute += req.body.variable;
         if(req.session){
+            console.log(req.session);
             var sessData = req.session;
             sessData.selected = someAttribute;
         }
