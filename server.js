@@ -208,6 +208,7 @@ app.post("/ajax", (req, res) => {
             console.log(req.session);
         }
     }
+    res.json('');
 });
 
 // error handling
