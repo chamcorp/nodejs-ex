@@ -31,7 +31,8 @@
 		<div id="info">Item 1 | <a id="nextItem" href="/item2">Next Item</a><br/>
 			Windy Prairie <span id="selected" ></span><br/>
 			<a id ="wind" onclick="wind = !wind;">Wind</a>
-			<a id ="addToCartButton" onclick="addToCart(selectedTee);" hidden> | Add to Cart</a><!--|
+			<span id="addToCartSeparator" hidden> | </span>
+			<a id ="addToCartButton" onclick="addToCart(selectedTee);" hidden>Add to Cart</a><!--|
 			<a onclick="sphere.visible = !sphere.visible;">Ball</a> |-->
 			<!--<a onclick="togglePins();">Pins</a>-->
 			<!--<form id="form" action="/charge" method="post">
@@ -595,6 +596,7 @@
 					console.log(intersects[0].object.name);
 					//alert("hit"+intersects[0].object.name);
 					document.getElementById("selected").innerHTML = "| " + intersects[0].object.name + " is selected";
+					document.getElementById("addToCartSeparator").removeAttribute("hidden");
 					document.getElementById("addToCartButton").removeAttribute("hidden");
 					camera.lookAt(intersects[0].object.parent.position);
 					controls.target= intersects[0].object.parent.position.clone();
