@@ -589,6 +589,7 @@
 				var intersects = raycaster.intersectObjects( objects );
 				if ( intersects.length > 0 ) {
 					console.log("hit");
+					addToCart(intersects[0].object.name);
 					console.log(intersects[0].object.name);
 					//alert("hit"+intersects[0].object.name);
 					document.getElementById("selected").innerHTML = "| " + intersects[0].object.name + " is selected";
@@ -602,6 +603,12 @@
 					}
 					controls.update();
 				}
+			}
+			function addToCart( productname ) {
+				const req = new XMLHttpRequest();
+				req.open('POST', '/ajax', true);
+				req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				req.send("variable="+productname); 
 			}
 		</script>
 	</body>
