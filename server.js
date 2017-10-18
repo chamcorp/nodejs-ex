@@ -169,6 +169,8 @@ app.get('/pagecount', function (req, res) {
     var selected = '';
     if(req.session){
         selected = req.session.selected;
+        console.log(req.session);
+        console.log(req.session.selected);
     }
     res.send(' You selected Tee ' + selected);
   }
@@ -203,6 +205,7 @@ app.post("/ajax", (req, res) => {
             console.log(req.session);
             var sessData = req.session;
             sessData.selected = someAttribute;
+            console.log(req.session);
         }
     }
 });
