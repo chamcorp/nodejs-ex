@@ -625,6 +625,7 @@
 			}
 			function goToCart() {
 				camera.lookAt(spriteyCartPosition);
+				controls.target= spriteyCartPosition.clone();
 				camera.position.set(spriteyCartPosition.x,spriteyCartPosition.y +4000 ,spriteyCartPosition.z);
 				controls.update();
 			}
