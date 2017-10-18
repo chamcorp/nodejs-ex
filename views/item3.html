@@ -623,7 +623,7 @@
 				req.send("variable="+productname); 
 			}
 			function goToCart() {
-				camera.lookAt(spriteyCart);
+				camera.lookAt(spriteyCart.position);
 				camera.position.set(spriteyCart.position.x,spriteyCart.position.y +4000 ,spriteyCart.position.z);
 				controls.update();
 			}
