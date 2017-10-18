@@ -189,6 +189,15 @@ app.post("/charge", (req, res) => {
 //Ajax send
 app.post("/ajax", (req, res) => {
     console.log(req.body);
+    if(req.body.variable){
+        var someAttribute = '';
+        console.log(req.body.variable);
+        someAttribute += req.body.variable;
+        if(req.session){
+            var sessData = req.session;
+            sessData.selected = someAttribute;
+        }
+    }
 });
 
 // error handling
