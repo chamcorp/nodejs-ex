@@ -158,13 +158,19 @@ app.get('/pagecount', function (req, res) {
   if (db) {
     db.collection('counts').count(function(err, count ){
         var someAttribute ='';
+        var selected = '';
         if(req.session){
-        var someAttribute = req.session.someAttribute;
+            someAttribute = req.session.someAttribute;
+            selected = req.session.selected;
         }
-      res.send('{ pageCount: ' + count + '}' + ' Your sessionID is ' + someAttribute );
+      res.send('{ pageCount: ' + count + '}' + ' Your sessionID is ' + someAttribute + '. You selected Tee ' + selected);
     });
-  } else {
-    res.send('{ pageCount: -1 }');
+  } else {     
+    var selected = '';
+    if(req.session){
+        selected = req.session.selected;
+    }
+    res.send(' You selected Tee ' + selected);
   }
 });
 
