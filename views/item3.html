@@ -32,7 +32,8 @@
 			Windy Prairie <span id="selected" ></span><br/>
 			<a id ="wind" onclick="wind = !wind;">Wind</a>
 			<span id="addToCartSeparator" hidden> | </span>
-			<a id ="addToCartButton" onclick="addToCart(selectedTee);" hidden>Add to Cart</a><!--|
+			<a id ="addToCartButton" onclick="addToCart(selectedTee);" hidden>Add to Cart</a>
+			<a id ="goToCartButton" onclick="goToCart();"> | Go to Cart</a><!--|
 			<a onclick="sphere.visible = !sphere.visible;">Ball</a> |-->
 			<!--<a onclick="togglePins();">Pins</a>-->
 			<!--<form id="form" action="/charge" method="post">
@@ -427,7 +428,7 @@
 				spritey.position.set(-175,400,-500);
 				scene.add( spritey );
 				//Shopping Cart Text
-				var spritey = makeTextSprite( " My Selection ", { fontsize: 72, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
+				var spriteyCart = makeTextSprite( " My Selection ", { fontsize: 72, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
 				spritey.position.set(-10000,400,-500);
 				scene.add( spritey );
 				// renderer
@@ -618,6 +619,11 @@
 				req.open('POST', '/ajax', true);
 				req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				req.send("variable="+productname); 
+			}
+			function goToCart() {
+				camera.lookAt(spriteyCart);
+				camera.position.set(-10000,4000,-500);
+				controls.update();
 			}
 		</script>
 	</body>
