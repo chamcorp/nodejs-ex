@@ -192,6 +192,20 @@ app.post("/charge", (req, res) => {
   .then(charge => res.render("charge.html"));
 });
 
+app.get('/cart', function (req, res) {
+    var cartText='';
+    req.sessionStore.client.hkeys('cart:'+ req.session.id, function (err, teesSelected) {
+    console.log(teesSelected.length + " tees selected:");
+    cartText+=teesSelected.length + " tees selected:";
+    teesSelected.forEach(err,function (tee) {
+        var teeCount=req.sessionStore.client.hget('cart:'+ req.session.id,tee);
+        console.log(tee + ' : ' + teeCount);
+        cartText+=tee + ' : ' + teeCount;
+    });
+    res.send(' Your sessionID is ' + req.session.id + '. You selected Tee ' + cartText);
+});
+
+
 //Ajax send
 app.post("/ajax", (req, res) => {
     if(req.body.variable){
