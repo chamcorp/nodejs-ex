@@ -196,7 +196,7 @@ app.get('/cart', function (req, res) {
     var cartText='';
     req.sessionStore.client.hgetall('cart:'+ req.session.id, function (err, teesSelected) {
         console.log(teesSelected);
-        int fieldCounter=0;
+        var fieldCounter=0;
         for (var field in teesSelected){
             cartText+=teesSelected[field];
             cartText+=field;
