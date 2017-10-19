@@ -627,16 +627,16 @@
 				req.send("variable="+productname); 
 			}
 			function goToCart() {
-				document.getElementById("addToCartButton").innerHTML='Go back to store';
-				document.getElementById("addToCartButton").setAttribute('onclick','goToStore();')
+				document.getElementById("goToCartButton").innerHTML='Go back to store';
+				document.getElementById("goToCartButton").setAttribute('onclick','goToStore();')
 				camera.lookAt(spriteyCartPosition);
 				controls.target= spriteyCartPosition.clone();
 				camera.position.set(spriteyCartPosition.x-3000,spriteyCartPosition.y,spriteyCartPosition.z);
 				controls.update();
 			}
 			function goToStore() {
-				document.getElementById("addToCartButton").innerHTML='Go to cart';
-				document.getElementById("addToCartButton").setAttribute('onclick','goToCart();')
+				document.getElementById("goToCartButton").innerHTML='Go to cart';
+				document.getElementById("goToCartButton").setAttribute('onclick','goToCart();')
 				camera.lookAt(new THREE.Vector3(0,0,-500));
 				controls.target.set(0,0,-500);
 				camera.position.set(2000,50,-500);
