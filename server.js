@@ -199,6 +199,7 @@ app.get('/cart', function (req, res) {
         var fieldCounter=0;
         for (var field in teesSelected){
             cartText+=teesSelected[field];
+            cartText+=' ';
             cartText+=field;
             fieldCounter++;
             console.log(fieldCounter);
