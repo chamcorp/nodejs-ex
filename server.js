@@ -201,6 +201,8 @@ app.get('/cart', function (req, res) {
             cartText+=teesSelected[field];
             cartText+=field;
             fieldCounter++;
+            console.log(fieldCounter);
+            console.log(teesSelected.length);
             if(fieldCounter!=teesSelected.length){
                 cartText+=' and ';
             }
