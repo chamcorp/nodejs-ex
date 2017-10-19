@@ -203,9 +203,9 @@ app.post("/ajax", (req, res) => {
             sessData.selected = someAttribute;
         }
       console.log(req.session);
-      console.log(req.session.store);
-      console.log(req.session.store.client);
-      var redisClient = req.session.store.client;
+      console.log(req.session.Store);
+      console.log(req.session.Store.client);
+      var redisClient = req.session.Store.client;
       redisClient.hset('cart:' + req.session.id, req.body.variable, 1, redis.print);
     }
     res.json('');
