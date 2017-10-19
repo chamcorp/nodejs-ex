@@ -196,10 +196,17 @@ app.get('/cart', function (req, res) {
     var cartText='';
     req.sessionStore.client.hgetall('cart:'+ req.session.id, function (err, teesSelected) {
         console.log(teesSelected);
+        int fieldCounter=0;
         for (var field in teesSelected){
             cartText+=teesSelected[field];
             cartText+=field;
-            cartText+=' and ';
+            fieldCounter++;
+            if(fieldCounter!=teesSelected.length){
+                cartText+=' and ';
+            }
+            else{
+                cartText+='.';
+            }
         }        
         res.send(' Your sessionID is ' + req.session.id + '. Your selection is ' + cartText);
     });
