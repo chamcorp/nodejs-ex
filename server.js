@@ -197,7 +197,7 @@ app.get('/cart', function (req, res) {
     req.sessionStore.client.hkeys('cart:'+ req.session.id, function (err, teesSelected) {
         console.log(teesSelected.length + " tees selected:");
         cartText+=teesSelected.length + " tees selected:";
-        teesSelected.forEach(err,function (tee) {
+        teesSelected.forEach(function (err, tee) {
             var teeCount=req.sessionStore.client.hget('cart:'+ req.session.id,tee);
             console.log(tee + ' : ' + teeCount);
             cartText+=tee + ' : ' + teeCount;
