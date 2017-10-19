@@ -194,16 +194,15 @@ app.post("/charge", (req, res) => {
 
 app.get('/cart', function (req, res) {
     var cartText='';
-    req.sessionStore.client.hkeys('cart:'+ req.session.id, function (err, teesSelected) {
-        console.log(teesSelected.length + " tees selected:");
-        cartText+=teesSelected.length + " tees selected:";
-        teesSelected.forEach(function (err, tee) {
-            var teeCount=req.sessionStore.client.hget('cart:'+ req.session.id,tee);
-            console.log(tee + ' : ' + teeCount);
-            cartText+=tee + ' : ' + teeCount;
-        });
+    req.sessionStore.client.hgetall('cart:'+ req.session.id, function (err, teesSelected) {
+        console.log(teesSelected);
+        for (var field in teesSelected){
+            cartText+=teesSelected[field];
+            cartText+=field;
+            cartText+=' and ';
+        }        
+        res.send(' Your sessionID is ' + req.session.id + '. Your selection is ' + cartText);
     });
-    res.send(' Your sessionID is ' + req.session.id + '. You selected Tee ' + cartText);
 });
 
 
