@@ -203,7 +203,7 @@ app.post("/ajax", (req, res) => {
             sessData.selected = someAttribute;
         }
       var redisClient = req.sessionStore.client;
-      redisClient.hset('cart:' + req.session.id, req.body.variable, 1, redis.print);
+      redisClient.hset('cart:' + req.session.id, req.body.variable, 1);
     }
     res.json('');
 });
