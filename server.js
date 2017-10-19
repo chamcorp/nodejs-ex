@@ -202,7 +202,7 @@ app.post("/ajax", (req, res) => {
             var sessData = req.session;
             sessData.selected = someAttribute;
         }
-      var redisClient = session.sessionStore.client;
+      var redisClient = req.sessionStore.client;
       redisClient.hset('cart:' + req.session.id, req.body.variable, 1, redis.print);
     }
     res.json('');
