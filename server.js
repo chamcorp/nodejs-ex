@@ -202,6 +202,7 @@ app.post("/ajax", (req, res) => {
             var sessData = req.session;
             sessData.selected = someAttribute;
         }
+      console.log(req.session);
       console.log(req.session.store);
       console.log(req.session.store.client);
       var redisClient = req.session.store.client;
