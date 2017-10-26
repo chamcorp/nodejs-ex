@@ -171,14 +171,10 @@
 					side: THREE.FrontSide, //modif Alex
 					alphaTest: 0.5
 				} );
-				//cloth texture doubleside
-				var clothTextureDoubleSide = loader.load( 'cola_face.png' );
-				clothTextureDoubleSide.wrapS = clothTextureDoubleSide.wrapT = THREE.RepeatWrapping;
-				clothTextureDoubleSide.anisotropy = 16;
 				// cloth geometry
 				clothGeometry = new THREE.ParametricGeometry( clothFunction, cloth.w, cloth.h );
 				clothGeometry.dynamic = true;
-				var uniforms = { texture:  { value: clothTextureDoubleSide } };
+				var uniforms = { texture:  { value: clothTexture } };
 				var vertexShader = document.getElementById( 'vertexShaderDepth' ).textContent;
 				var fragmentShader = document.getElementById( 'fragmentShaderDepth' ).textContent;
 				// cloth mesh
@@ -192,6 +188,12 @@
 				object.children[1].castShadow = true;
 				scene.add( object );
 				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
+					uniforms: uniforms,
+					vertexShader: vertexShader,
+					fragmentShader: fragmentShader,
+					side: THREE.DoubleSide
+				} );
+				object.children[1].customDepthMaterial = new THREE.ShaderMaterial( {
 					uniforms: uniforms,
 					vertexShader: vertexShader,
 					fragmentShader: fragmentShader,
