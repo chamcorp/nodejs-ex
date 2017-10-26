@@ -134,7 +134,7 @@
 				scene.add( light );
 				// cloth material
 				var loader = new THREE.TextureLoader();
-				var clothTexture = loader.load( 'pic4.png' );
+				var clothTexture = loader.load( 'cola_face.png' );
 				clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
 				clothTexture.anisotropy = 16;
 				var clothMaterial = new THREE.MeshPhongMaterial( {
@@ -144,7 +144,7 @@
 					alphaTest: 0.5
 				} );
 				//cloth back material Alex
-				var clothTexture2 = loader.load( 'pic2.png' );
+				var clothTexture2 = loader.load( 'dos_blanc.png' );
 				clothTexture2.wrapS = clothTexture2.wrapT = THREE.RepeatWrapping;
 				clothTexture2.anisotropy = 16;
 				var clothMaterial2 = new THREE.MeshPhongMaterial( {
@@ -154,7 +154,7 @@
 					alphaTest: 0.5
 				} );				
 				// cloth material 3
-				var clothTexture3 = loader.load( 'pic3.png' );
+				var clothTexture3 = loader.load( 'cola_face_miroir.png' );
 				clothTexture3.wrapS = clothTexture3.wrapT = THREE.RepeatWrapping;
 				clothTexture3.anisotropy = 16;
 				var clothMaterial3 = new THREE.MeshPhongMaterial( {
@@ -162,15 +162,15 @@
 					map: clothTexture3,
 					side: THREE.BackSide, //modif Alex
 					alphaTest: 0.5
-				} );
-				//cloth back material 4
-				var clothTexture4 = loader.load( 'pic2.png' );
+				} );				
+				// cloth material 4
+				var clothTexture4 = loader.load( 'dos_blanc.png' );
 				clothTexture4.wrapS = clothTexture4.wrapT = THREE.RepeatWrapping;
 				clothTexture4.anisotropy = 16;
 				var clothMaterial4 = new THREE.MeshPhongMaterial( {
 					specular: 0x030303,
 					map: clothTexture4,
-					side: THREE.FrontSide,
+					side: THREE.Frontside, //modif Alex
 					alphaTest: 0.5
 				} );
 				// cloth geometry
@@ -262,7 +262,7 @@
 				sphere.receiveShadow = true;
 				scene.add( sphere );
 				// ground
-				var groundTexture = loader.load( 'https://threejs.org/examples/textures/terrain/grasslight-big.jpg' );
+				var groundTexture = loader.load( 'grasslight-big.jpg' );
 				groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
 				groundTexture.repeat.set( 25, 25 );
 				groundTexture.anisotropy = 16;

@@ -34,8 +34,7 @@
 			<span id="addToCartSeparator" hidden> | </span>
 			<a id ="addToCartButton" onclick="addToCart(selectedTee);" hidden>Add to Cart</a>
 			<span id="goToCartSeparator"> | </span>
-			<a id ="goToCartButton" onclick="goToCart();">Go to Cart</a><!--|
-			<a onclick="sphere.visible = !sphere.visible;">Ball</a> |-->
+			<a id ="goToCartButton" onclick="goToCart();">Go to Cart</a>
 			<!--<a onclick="togglePins();">Pins</a>-->
 			<!--<form id="form" action="/charge" method="post">
 				<article>
@@ -94,7 +93,6 @@
 			var container, stats;
 			var camera, scene, renderer;
 			var clothGeometry;
-			var sphere;
 			var object;
 			var controls;
 			//Alex Select Tee
@@ -141,7 +139,7 @@
 				scene.add( light );
 				// cloth material
 				var loader = new THREE.TextureLoader();
-				var clothTexture = loader.load( 'pic4.png' );
+				var clothTexture = loader.load( 'cola_face.png' );
 				clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
 				clothTexture.anisotropy = 16;
 				var clothMaterial = new THREE.MeshPhongMaterial( {
@@ -150,8 +148,8 @@
 					side: THREE.FrontSide, //modif Alex
 					alphaTest: 0.5
 				} );
-				//cloth back material Alex
-				var clothTexture2 = loader.load( 'pic2.png' );
+				//cloth back white material Alex
+				var clothTexture2 = loader.load( 'dos_blanc.png' );
 				clothTexture2.wrapS = clothTexture2.wrapT = THREE.RepeatWrapping;
 				clothTexture2.anisotropy = 16;
 				var clothMaterial2 = new THREE.MeshPhongMaterial( {
@@ -159,25 +157,15 @@
 					map: clothTexture2,
 					side: THREE.BackSide,
 					alphaTest: 0.5
-				} );				
-				// cloth material 3
-				var clothTexture3 = loader.load( 'pic3.png' );
-				clothTexture3.wrapS = clothTexture3.wrapT = THREE.RepeatWrapping;
-				clothTexture3.anisotropy = 16;
-				var clothMaterial3 = new THREE.MeshPhongMaterial( {
-					specular: 0x030303,
-					map: clothTexture3,
-					side: THREE.BackSide, //modif Alex
-					alphaTest: 0.5
 				} );
-				//cloth back material 4
-				var clothTexture4 = loader.load( 'pic2.png' );
+				// cloth material faire
+				var clothTexture4 = loader.load( 'faire.png' );
 				clothTexture4.wrapS = clothTexture4.wrapT = THREE.RepeatWrapping;
 				clothTexture4.anisotropy = 16;
 				var clothMaterial4 = new THREE.MeshPhongMaterial( {
 					specular: 0x030303,
 					map: clothTexture4,
-					side: THREE.FrontSide,
+					side: THREE.FrontSide, //modif Alex
 					alphaTest: 0.5
 				} );
 				// cloth geometry
@@ -208,7 +196,7 @@
 				objects.push( object.children[0] );
 				objects.push( object.children[1] );
 				// cloth mesh alex
-				var materials = [clothMaterial , clothMaterial2 ];
+				var materials = [clothMaterial4 , clothMaterial2 ];
 				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
 				object.position.set( -375, 0, 0 );
 				object.children[0].castShadow = true;
@@ -225,49 +213,6 @@
 				object.children[1].name = "number 2";
 				objects.push( object.children[0] );
 				objects.push( object.children[1] );
-				// cloth mesh alex 2
-				var materials = [clothMaterial3 , clothMaterial4 ];
-				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
-				object.position.set( 0, 0, -1000 );
-				object.children[0].castShadow = true;
-				object.children[1].castShadow = true;
-				scene.add( object );
-				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
-					uniforms: uniforms,
-					vertexShader: vertexShader,
-					fragmentShader: fragmentShader,
-					side: THREE.DoubleSide
-				} );
-				//Alex Select Tee
-				object.children[0].name = "number 3";
-				object.children[1].name = "number 3";
-				objects.push( object.children[0] );
-				objects.push( object.children[1] );
-				// cloth mesh alex 3
-				var materials = [clothMaterial3 , clothMaterial4 ];
-				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
-				object.position.set( -375, 0, -1000 );
-				object.children[0].castShadow = true;
-				object.children[1].castShadow = true;
-				scene.add( object );
-				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
-					uniforms: uniforms,
-					vertexShader: vertexShader,
-					fragmentShader: fragmentShader,
-					side: THREE.DoubleSide
-				} );
-				//Alex Select Tee
-				object.children[0].name = "number 4";
-				object.children[1].name = "number 4";
-				objects.push( object.children[0] );
-				objects.push( object.children[1] );
-				// sphere
-				var ballGeo = new THREE.SphereGeometry( ballSize, 20, 20 );
-				var ballMaterial = new THREE.MeshPhongMaterial( { color: 0xaaaaaa } );
-				sphere = new THREE.Mesh( ballGeo, ballMaterial );
-				sphere.castShadow = true;
-				sphere.receiveShadow = true;
-				scene.add( sphere );
 				// ground
 				var groundTexture = loader.load( 'grasslight-big.jpg' );
 				groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
@@ -347,84 +292,6 @@
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
-				// poles alex 2
-				var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
-				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
-				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = - 125;
-				mesh.position.y = - 62; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = 125;
-				mesh.position.y = - 62; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( new THREE.BoxGeometry( 255, 5, 5 ), poleMat );
-				mesh.position.y = - 250 + ( 750 / 2 ); 
-				mesh.position.z = - 1000; //modif
-				mesh.position.x = 0;
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var gg = new THREE.BoxGeometry( 10, 10, 10 );
-				var mesh = new THREE.Mesh( gg, poleMat );
-				mesh.position.y = - 250; 
-				mesh.position.z = - 1000; //modif
-				mesh.position.x = 125;
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( gg, poleMat );
-				mesh.position.y = - 250; 
-				mesh.position.z = - 1000; //modif
-				mesh.position.x = - 125;
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				// poles alex 3
-				var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
-				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
-				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = - 500;
-				mesh.position.y = - 62; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = -250;
-				mesh.position.y = - 62; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( new THREE.BoxGeometry( 255, 5, 5 ), poleMat );
-				mesh.position.y = - 250 + ( 750 / 2 );
-				mesh.position.x = -375; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var gg = new THREE.BoxGeometry( 10, 10, 10 );
-				var mesh = new THREE.Mesh( gg, poleMat );
-				mesh.position.y = - 250;
-				mesh.position.x = -250; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( gg, poleMat );
-				mesh.position.y = - 250;
-				mesh.position.x = - 500; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
 				//Text
 				var spritey = makeTextSprite( " Cham Corp Store ", { fontsize: 72, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
 				spritey.position.set(-175,400,-500);
@@ -467,7 +334,6 @@
 				container.appendChild( stats.dom );
 				//
 				window.addEventListener( 'resize', onWindowResize, false );
-				sphere.visible = ! true;
 			}
 			//2D Texts
 			function makeTextSprite( message, parameters )
@@ -574,7 +440,6 @@
 				clothGeometry.computeVertexNormals();
 				clothGeometry.normalsNeedUpdate = true;
 				clothGeometry.verticesNeedUpdate = true;
-				sphere.position.copy( ballPosition );
 				//camera.lookAt( scene.position );
 				renderer.render( scene, camera );
 			}
