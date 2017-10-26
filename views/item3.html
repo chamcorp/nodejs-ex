@@ -216,7 +216,13 @@
 					uniforms: uniforms,
 					vertexShader: vertexShader,
 					fragmentShader: fragmentShader,
-					side: THREE.DoubleSide
+					side: THREE.Frontside
+				} );
+				object.children[1].customDepthMaterial = new THREE.ShaderMaterial( {
+					uniforms: uniforms,
+					vertexShader: vertexShader,
+					fragmentShader: fragmentShader,
+					side: THREE.BackSide
 				} );
 				//Alex Select Tee
 				object.children[0].name = "number 2";
