@@ -12,8 +12,8 @@ var RedisStore = require('connect-redis')(session);
 //Stripe add
 //const keyPublishable = process.env.PUBLISHABLE_KEY;
 //const keySecret = process.env.SECRET_KEY;    
-const keyPublishable = "pk_test_6pRNASCoBOKtIshFeQd4XMUh";
-const keySecret= "sk_test_BQokikJOvBiI2HlWgH4olfQ2";
+const keyPublishable = "pk_test_DfOWIh4hmFl3Hw8Fx2Rx6mVN";
+const keySecret= "sk_test_Thb4cwOYyYN3dP9bJp6h90Cv";
 const stripe = require("stripe")(keySecret);
 app.set('view engine', 'ejs');
 app.use(require("body-parser").urlencoded({extended: false}));
@@ -189,7 +189,10 @@ app.post("/charge", (req, res) => {
          currency: "usd",
          customer: customer.id
     }))
-  .then(charge => res.render("charge.html"));
+  .then(charge => {
+        var redisClient = req.sessionStore.client;
+        redisClient.hset('order:' + req.session.id, 'test' , 1 , res.render("charge.html"))
+  });
 });
 
 app.get('/cart', function (req, res) {
@@ -218,6 +221,7 @@ app.get('/cart', function (req, res) {
 
 //Ajax send
 app.post("/ajax", (req, res) => {
+    var products=[];
     if(req.body.variable){
         var someAttribute = '';
         console.log(req.body.variable);
@@ -226,10 +230,24 @@ app.post("/ajax", (req, res) => {
             var sessData = req.session;
             sessData.selected = someAttribute;
         }
-      var redisClient = req.sessionStore.client;
-      redisClient.hset('cart:' + req.session.id, req.body.variable, 1);
+        var redisClient = req.sessionStore.client;
+        redisClient.hset('cart:' + req.session.id, req.body.variable, 1, function (err,result){
+            res.json('');
+        });
     }
-    res.json('');
+});
+
+app.get("/cartItems", (req, res) => {
+    var products=[];
+    var redisClient = req.sessionStore.client;
+    redisClient.hkeys('cart:' + req.session.id, function (err, replies) {
+        console.log(replies.length + " replies:");
+        replies.forEach(function (reply, i) {
+            console.log("    " + i + ": " + reply);
+            products.push(reply);
+        });
+        res.json(products);
+    });
 });
 
 // error handling

@@ -16,8 +16,10 @@
 				position: absolute;
 				padding-top: 20px;
 				padding-bottom: 20px;
+				padding-right: 20px;
 				width: 100%;
-				text-align: center;
+                box-sizing: border-box;
+				text-align: right;
 			}
 			a {
 				text-decoration: underline;
@@ -28,12 +30,9 @@
 	</head>
 
 	<body>
-		<div id="info">Item 1 | <a id="nextItem" href="/item2">Next Item</a><br/>
-			Windy Prairie <span id="selected" ></span><br/>
-			<a id ="wind" onclick="wind = !wind;">Wind</a>
-			<span id="addToCartSeparator" hidden> | </span>
-			<a id ="addToCartButton" onclick="addToCart(selectedTee);" hidden>Add to Cart</a>
-			<span id="goToCartSeparator"> | </span>
+		<div id="info"><span id="selected" ></span><span id="selectedSizeSpan" ></span><br/>
+			<a id ="goToStoreButton" onclick="goToStore();" hidden>Go Back to Store</a>
+			<span id="goToStoreSeparator" hidden> | </span>
 			<a id ="goToCartButton" onclick="goToCart();">Go to Cart</a>
 			<!--<a onclick="togglePins();">Pins</a>-->
 			<!--<form id="form" action="/charge" method="post">
@@ -44,6 +43,8 @@
 			</form>-->
 		</div>
 
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        
 		<script src="https://threejs.org/build/three.js"></script>
 
 		<script src="https://threejs.org/examples/js/Detector.js"></script>
@@ -100,15 +101,25 @@
 			var raycaster;
 			var mouse;
 			var objects = [];
-			var selectedTee= '';
-			var spriteyCartPosition=new THREE.Vector3( );
+			var selectedTee;
+			var selectedSprite;
+			var spriteyCart;
+			var spriteyStore;
+            var sizes = [];
+            var sizeBackground;
+            var sizeSelector;
+            var sizeSelected='';
+            var cartIcon;
+            var cartItemMeshes=[];
 			//end Alex Select Tee
 			//sphere in clothjs
 			var sphere ={};
 			sphere.visible=false;
 			init();
 			animate();
-			function init() {
+			function init() {                
+                //Configuration espace
+                var espaceEntreTees = 1125;
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 				// scene
@@ -121,9 +132,9 @@
 				//camera.position.x = 1000;
 				//camera.position.y = 50;
 				//camera.position.z = 3000;
-				camera.position.x = 2000;
-				camera.position.y = 50;
-				camera.position.z = -500;
+				//camera.position.x = 2000;
+				//camera.position.y = 50;
+				//camera.position.z = -500;
 				scene.add( camera );
 				// lights
 				var light, materials;
@@ -134,16 +145,16 @@
 				light.castShadow = true;
 				light.shadow.mapSize.width = 1024;
 				light.shadow.mapSize.height = 1024;
-				var d = 1000;
+				var d = 1300;
 				light.shadow.camera.left = - d;
 				light.shadow.camera.right = d;
 				light.shadow.camera.top = d;
 				light.shadow.camera.bottom = - d;
-				light.shadow.camera.far = 10000;
+				light.shadow.camera.far = 5000;
 				scene.add( light );
 				// cloth material
 				var loader = new THREE.TextureLoader();
-				var clothTexture = loader.load( 'cola_face.png' );
+				var clothTexture = loader.load( '001.png' );
 				clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
 				clothTexture.anisotropy = 16;
 				var clothMaterial = new THREE.MeshPhongMaterial( {
@@ -163,7 +174,7 @@
 					alphaTest: 0.5
 				} );
 				// cloth material faire
-				var clothTexture4 = loader.load( 'faire.png' );
+				var clothTexture4 = loader.load( '002.png' );
 				clothTexture4.wrapS = clothTexture4.wrapT = THREE.RepeatWrapping;
 				clothTexture4.anisotropy = 16;
 				var clothMaterial4 = new THREE.MeshPhongMaterial( {
@@ -201,14 +212,13 @@
 					side: THREE.BackSide
 				} );
 				//Alex Select Tee
-				object.children[0].name = "number 1";
-				object.children[1].name = "number 1";
+				object.name = "001";
 				objects.push( object.children[0] );
 				objects.push( object.children[1] );
 				// cloth mesh alex
 				var materials = [clothMaterial4 , clothMaterial2 ];
 				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
-				object.position.set( -375, 0, 0 );
+				object.position.set( -espaceEntreTees, 0, 0 );
 				object.children[0].castShadow = true;
 				object.children[1].castShadow = true;
 				scene.add( object );
@@ -216,7 +226,7 @@
 					uniforms: uniforms,
 					vertexShader: vertexShader,
 					fragmentShader: fragmentShader,
-					side: THREE.Frontside
+					side: THREE.FrontSide
 				} );
 				object.children[1].customDepthMaterial = new THREE.ShaderMaterial( {
 					uniforms: uniforms,
@@ -225,8 +235,7 @@
 					side: THREE.BackSide
 				} );
 				//Alex Select Tee
-				object.children[0].name = "number 2";
-				object.children[1].name = "number 2";
+				object.name = "002";
 				objects.push( object.children[0] );
 				objects.push( object.children[1] );
 				// ground
@@ -240,6 +249,39 @@
 				mesh.rotation.x = - Math.PI / 2;
 				mesh.receiveShadow = true;
 				scene.add( mesh );
+                //Add to cart plane
+                var addToCartTexture = loader.load( 'cart.png' );
+				var addToCartMaterial = new THREE.MeshPhongMaterial( {map: addToCartTexture, transparent:true} );
+				cartIcon = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), addToCartMaterial );
+				cartIcon.position.y = 150 ;
+				cartIcon.position.x = - 83.333 +20 ;
+				cartIcon.rotation.x = - Math.PI;
+				cartIcon.rotation.z = Math.PI;
+                cartIcon.name="cartIcon";
+                objects.push(cartIcon);
+                cartIcon.visible=false;
+				scene.add( cartIcon );
+                var sizeSelectorTexture = loader.load( 'size_selector.png' );
+				var sizeSelectorMaterial = new THREE.MeshPhongMaterial( {map: sizeSelectorTexture, transparent:true} );
+				sizeSelector = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), sizeSelectorMaterial );
+				sizeSelector.position.y = 150 ;
+				sizeSelector.position.x = 83.333 -20 ;
+				sizeSelector.rotation.x = - Math.PI;
+				sizeSelector.rotation.z = Math.PI;
+                sizeSelector.name="sizeSelector";
+                objects.push(sizeSelector);
+                sizeSelector.visible=false;
+				scene.add( sizeSelector );
+                //Size Meshes
+                createSizeMesh('s',1);
+                createSizeMesh('m',2);
+                createSizeMesh('l',3);
+                createSizeMesh('xl',4);
+                //Background Size
+                var sizeBackgroundMaterial = new THREE.MeshPhongMaterial( {color: 0xdcdcdc} );
+                sizeBackground = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), sizeBackgroundMaterial );
+                sizeBackground.visible=false;
+                scene.add(sizeBackground);
 				// poles
 				var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
 				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
@@ -278,45 +320,46 @@
 				var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
 				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
 				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = - 500;
+				mesh.position.x = - 125 - espaceEntreTees;
 				mesh.position.y = - 62;
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
 				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = -250;
+				mesh.position.x = 125 - espaceEntreTees;
 				mesh.position.y = - 62;
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
 				var mesh = new THREE.Mesh( new THREE.BoxGeometry( 255, 5, 5 ), poleMat );
 				mesh.position.y = - 250 + ( 750 / 2 );
-				mesh.position.x = -375;
+				mesh.position.x = 0 - espaceEntreTees;
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
 				var gg = new THREE.BoxGeometry( 10, 10, 10 );
 				var mesh = new THREE.Mesh( gg, poleMat );
 				mesh.position.y = - 250;
-				mesh.position.x = -250;
+				mesh.position.x = 125 - espaceEntreTees;
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
 				var mesh = new THREE.Mesh( gg, poleMat );
 				mesh.position.y = - 250;
-				mesh.position.x = - 500;
+				mesh.position.x = - 125 - espaceEntreTees;
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
 				//Text
-				var spritey = makeTextSprite( " Cham Corp Store ", { fontsize: 72, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
-				spritey.position.set(-175,400,-500);
-				scene.add( spritey );
+				spriteyStore = makeTextSprite( " Cham Corp Store ", { fontsize: 59, borderColor: {r:255, g:255, b:255, a:1.0}, backgroundColor: {r:255, g:255, b:255, a:0.5} } );
+				spriteyStore.position.set(-espaceEntreTees/2,400,0);
+				scene.add( spriteyStore );
+                //selectedSprite=spriteyStore;
 				//Shopping Cart Text
-				var spriteyCart = makeTextSprite( " My Selection ", { fontsize: 72, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
+				spriteyCart = makeTextSprite( " My Selection ", { fontsize: 59, borderColor: {r:255, g:255, b:255, a:1.0}, backgroundColor: {r:255, g:255, b:255, a:0.5} } );
 				spriteyCart.position.set(-10000,400,-500);
-				spriteyCartPosition=spriteyCart.position;
 				scene.add( spriteyCart );
+                //objects.push(spriteyCart);
 				// renderer
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -328,13 +371,16 @@
 				renderer.shadowMap.enabled = true;
 				// controls
 				controls = new THREE.OrbitControls( camera, renderer.domElement );
-				controls.target.set(0,0,-500);
+				//controls.target.set(0,0,-500);
+                controls.target.set(spriteyStore.position.x,spriteyStore.position.y/2,spriteyStore.position.z);
 				controls.maxPolarAngle = Math.PI * 0.5;
 				controls.minDistance = 500;
-				controls.maxDistance = 15000;
+				controls.maxDistance = 10000;
 				controls.enablePan = false;
-				camera.lookAt(new THREE.Vector3(0,0,-500)); //test alex
-				controls.update();
+				//camera.lookAt(new THREE.Vector3(0,0,-500)); //test alex
+				camera.position.set(spriteyStore.position.x,spriteyStore.position.y,spriteyStore.position.z-3000);
+				camera.lookAt(spriteyStore.position);
+                controls.update();
 				//controls Alex
 				//var controls = new THREE.FirstPersonControls( camera, renderer.domElement );
     				//controls.lookSpeed = 0.05;
@@ -350,6 +396,19 @@
 				container.appendChild( stats.dom );
 				//
 				window.addEventListener( 'resize', onWindowResize, false );
+                //Draw items already in cart
+                $.ajax({
+                    url : '/cartItems', // La ressource ciblée
+                    type : 'GET', // Le type de la requête HTTP.
+                    dataType : 'json',
+                    success : function(response){
+                        console.log('success2');
+                        drawCartItems(response);
+                    },
+                    error : function(error){
+                        console.log('error2');
+                    }
+                });
 			}
 			//2D Texts
 			function makeTextSprite( message, parameters )
@@ -377,8 +436,8 @@
 				var spriteAlignment = new THREE.Vector2( 0, 0 );
 
 				var canvas = document.createElement('canvas');
-				canvas.height=350;
-				canvas.width=700;
+				canvas.height=128;
+				canvas.width=512;
 				var context = canvas.getContext('2d');
 				context.font = "Bold " + fontsize + "px " + fontface;
 
@@ -394,21 +453,23 @@
 											  + borderColor.b + "," + borderColor.a + ")";
 
 				context.lineWidth = borderThickness;
-				roundRect(context, borderThickness/2, borderThickness/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
-				// 1.4 is extra height factor for text below baseline: g,j,p,q.
-
+				//roundRect(context, borderThickness/2, borderThickness/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
+                roundRect(context, borderThickness/2, borderThickness/2, 508, 124, 10);
+                
 				// text color
 				context.fillStyle = "rgba(0, 0, 0, 1.0)";
 
-				context.fillText( message, borderThickness, fontsize + borderThickness);
+                context.textAlign = "center";
+                context.textBaseline = "middle";
+				context.fillText( message, 256, 64,500);
 
 				// canvas contents will be used for a texture
-				var texture = new THREE.Texture(canvas) 
-				texture.needsUpdate = true;
+				var texture = new THREE.CanvasTexture(canvas);
 
 				var spriteMaterial = new THREE.SpriteMaterial({ map: texture});
 				var sprite = new THREE.Sprite( spriteMaterial );
-				sprite.scale.set(400,200,1.0);
+				sprite.scale.set(400,100,1.0);
+                sprite.name=message;
 				return sprite;	
 			}
 			// function for drawing rounded rectangles
@@ -426,7 +487,7 @@
 			      ctx.quadraticCurveTo(x, y, x+r, y);
 			      ctx.closePath();
 			      ctx.fill();
-			      ctx.stroke();   
+			      //ctx.stroke();   
 			}
 			//
 			function onWindowResize() {
@@ -461,7 +522,7 @@
 			}
 			function onDocumentTouchStart( event ) {
 				event.preventDefault();
-				if(event.target.id=="addToCartButton" || event.target.id=="goToCartButton" || event.target.id=="nextItem" || event.target.id=="wind" || event.target.parentElement.id=="form" || event.target.parentElement.parentElement.id =="form"){
+				if(event.target.id=="goToStoreButton" || event.target.id=="goToCartButton" || event.target.id=="nextItem" || event.target.id=="wind" || event.target.parentElement.id=="form" || event.target.parentElement.parentElement.id =="form"){
 					event.target.click();
 				}
 				else{
@@ -476,52 +537,269 @@
 				mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
 				raycaster.setFromCamera( mouse, camera );
 				for (var i = 0; i < objects.length; i++) {
-					objects[i].geometry.computeBoundingSphere();
+                    if(objects[i].type=="Mesh"){
+                        objects[i].geometry.computeBoundingSphere();
+                    }
 				}
 				var intersects = raycaster.intersectObjects( objects );
 				if ( intersects.length > 0 ) {
-					console.log("hit");
-					selectedTee = intersects[0].object.name;
-					console.log(intersects[0].object.name);
-					//alert("hit"+intersects[0].object.name);
-					document.getElementById("selected").innerHTML = "| " + intersects[0].object.name + " is selected";
-					document.getElementById("addToCartSeparator").removeAttribute("hidden");
-					document.getElementById("addToCartButton").removeAttribute("hidden");
-					camera.lookAt(intersects[0].object.parent.position);
-					controls.target= intersects[0].object.parent.position.clone();
-					if(intersects[0].object.name == "number 3" || intersects[0].object.name == "number 4"){
-						camera.position.set(intersects[0].object.parent.position.x, intersects[0].object.parent.position.y + 300, intersects[0].object.parent.position.z + 900);
-					}
-					else{
-						camera.position.set(intersects[0].object.parent.position.x, intersects[0].object.parent.position.y + 300, intersects[0].object.parent.position.z - 900);
-					}
-					controls.update();
+                    console.log(intersects[0].object.name);
+                    if(intersects[0].object.name=="sizeSelector"){
+                        //removeSelectedSpriteFromIntersectionObjects("sizeSelector");
+                        sizeSelector.visible=false;
+                        for (var i = 0; i < sizes.length; i++) {
+                        sizes[i].visible=true;
+                        }
+                    }
+                    else if(intersects[0].object.name=="s" ||intersects[0].object.name=="m" ||intersects[0].object.name=="l" ||intersects[0].object.name=="xl"){
+                        setBackgroundFromSelectedSize(intersects[0].object.name);
+                    }
+                    else if(intersects[0].object.name=="cartIcon"){
+                        addToCart(selectedTee.name,sizeSelected);
+                    }
+                    else if(intersects[0].object.type=="Mesh"){
+                        setSelectedProduct(intersects[0].object.parent);
+                    }
+//                    else if(intersects[0].object.type=="Sprite"){
+//                        if(intersects[0].object.name==" My Selection "){
+//                            goToCart();
+//                        }
+//                        else if(intersects[0].object.name==" Cham Corp Store "){
+//                            goToStore();
+//                        }
+//                    }
 				}
 			}
-			function addToCart( productname ) {
-				var spriteyprod = makeTextSprite( productname, { fontsize: 72, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
-				spriteyprod.position.set(-10000,300,-500);
-				scene.add( spriteyprod );
-				const req = new XMLHttpRequest();
-				req.open('POST', '/ajax', true);
-				req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-				req.send("variable="+productname); 
+			function addToCart( productname , sizeName ) {
+                if(sizeName==''){
+                    sizeSelector.visible=false;
+                    for (var i = 0; i < sizes.length; i++) {
+                        sizes[i].visible=true;
+                    }
+                    return;
+                }
+//				var spriteyprod = makeTextSprite( productname, { fontsize: 72, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
+//				spriteyprod.position.set(-10000,300,-500);
+//				scene.add( spriteyprod );
+                
+                $.ajax({
+                    url : '/ajax', // La ressource ciblée
+                    type : 'POST', // Le type de la requête HTTP.
+                    data : "variable="+productname+sizeName,
+                    dataType : 'json',
+                    success : function(response){
+                        console.log('success');
+                        drawNewCartItem(productname,sizeName);
+                    },
+                    error : function(error){
+                        console.log('error');
+                    }
+                });
+                
+//				const req = new XMLHttpRequest();
+//				req.open('POST', '/ajax', true);
+//				req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//				req.send("variable="+productname+sizeName);
+                goToCart();
 			}
 			function goToCart() {
+                $.ajax({
+                    url : '/cartItems', // La ressource ciblée
+                    type : 'GET', // Le type de la requête HTTP.
+                    dataType : 'json',
+                    success : function(response){
+                        console.log('success2');
+                        //drawCartItems(response);
+                    },
+                    error : function(error){
+                        console.log('error2');
+                    }
+                });
+                removeSelectedProduct();
+                hideCartIcon();
+                resetSizeSelected()
+                hideSizes();
+                hideSizeSelector();
+                //reAddSelectedSpriteToIntersectionObjects();
+                //selectedSprite=spriteyCart;
+                //removeSelectedSpriteFromIntersectionObjects(spriteyCart.name);
 				document.getElementById("goToCartButton").innerHTML='Go back to store';
 				document.getElementById("goToCartButton").setAttribute('onclick','goToStore();')
-				camera.lookAt(spriteyCartPosition);
-				controls.target= spriteyCartPosition.clone();
-				camera.position.set(spriteyCartPosition.x-3000,spriteyCartPosition.y,spriteyCartPosition.z);
+				camera.lookAt(spriteyCart.position);
+				controls.target.set(spriteyCart.position.x,spriteyCart.position.y-200,spriteyCart.position.z);
+				camera.position.set(spriteyCart.position.x-3000,spriteyCart.position.y-200,spriteyCart.position.z);
 				controls.update();
 			}
 			function goToStore() {
+                removeSelectedProduct();
+                hideCartIcon();
+                resetSizeSelected()
+                hideSizes();
+                hideSizeSelector();
+                //reAddSelectedSpriteToIntersectionObjects();
+                //selectedSprite=spriteyStore;
+                //removeSelectedSpriteFromIntersectionObjects(spriteyStore.name);
 				document.getElementById("goToCartButton").innerHTML='Go to cart';
 				document.getElementById("goToCartButton").setAttribute('onclick','goToCart();')
-				camera.lookAt(new THREE.Vector3(0,0,-500));
-				controls.target.set(0,0,-500);
-				camera.position.set(2000,50,-500);
+                controls.target.set(spriteyStore.position.x,spriteyStore.position.y/2,spriteyStore.position.z);
+				camera.position.set(spriteyStore.position.x,spriteyStore.position.y,spriteyStore.position.z-3000);
+				camera.lookAt(spriteyStore.position);
 				controls.update();
+			}
+			function setProductText(productName) {
+				document.getElementById("selected").innerHTML = productName + " is selected";
+				document.getElementById("goToStoreButton").removeAttribute("hidden");
+				document.getElementById("goToStoreSeparator").removeAttribute("hidden");
+			}
+			function setSelectedProduct(product) {
+				document.getElementById("goToCartButton").innerHTML='Go to cart';
+				document.getElementById("goToCartButton").setAttribute('onclick','goToCart();');
+                hideSizes();
+                resetSizeSelected()
+                moveSizesAndCartIcon(product.position);
+                showSizeSelector();
+                reAddSelectedProductToIntersectionObjects();
+                //reAddSelectedSpriteToIntersectionObjects();
+				selectedTee = product;
+                setProductText(product.name);
+                removeSelectedProductFromIntersectionObjects(product.name);
+				camera.lookAt(product.position);
+				controls.target= product.position.clone();
+                camera.position.set(product.position.x, product.position.y + 300, product.position.z - 900);
+				controls.update();
+			}
+			function removeProductText() {
+				document.getElementById("selected").innerHTML = "";
+				document.getElementById("selectedSizeSpan").innerHTML = "";
+				document.getElementById("goToStoreSeparator").setAttribute("hidden","");
+				document.getElementById("goToStoreButton").setAttribute("hidden","");
+			}
+			function removeSelectedProductFromIntersectionObjects(productName) {
+                for (var i = 0; i < objects.length; i++) {
+					if(objects[i].parent.name == productName){
+                        objects.splice(i,2);
+                        break;
+                    }
+				}
+			}
+			function reAddSelectedProductToIntersectionObjects() {
+                if(selectedTee){
+                    objects.push(selectedTee.children[0]);
+                    objects.push(selectedTee.children[1]);
+                    selectedTee=null;
+                }
+			}
+			function removeSelectedProduct() {
+                removeProductText();
+                reAddSelectedProductToIntersectionObjects();
+			}
+			function removeSelectedSpriteFromIntersectionObjects(spriteName) {
+                for (var i = 0; i < objects.length; i++) {
+					if(objects[i].name == spriteName){
+                        objects.splice(i,1);
+                        break;
+                    }
+              }
+			}
+			function setBackgroundFromSelectedSize(sizeName) {
+                for (var i = 0; i < sizes.length; i++) {
+					if(sizes[i].name == sizeName){
+                        sizeBackground.position.set(sizes[i].position.x,sizes[i].position.y,sizes[i].position.z) ;
+                        sizeBackground.rotation.set(sizes[i].rotation.x,sizes[i].rotation.y,sizes[i].rotation.z) ;
+				        document.getElementById("selectedSizeSpan").innerHTML = " in size " + sizeName;
+                        sizeBackground.visible=true;
+                        sizeSelected=sizeName;
+                        break;
+                    }
+              }
+			}
+			function setSizesPositions() {
+                sizeBackground.visible=false;
+                cartIcon.visible=false;
+                for (var i = 0; i < sizes.length; i++) {
+                        sizes[i].visible=false;
+                }
+			}
+			function showSizeSelector() {
+                cartIcon.visible=true;
+                sizeSelector.visible=true;
+			}
+			function hideSizes() {
+                sizeBackground.visible=false;
+                for (var i = 0; i < sizes.length; i++) {
+                        sizes[i].visible=false;
+                }
+			}
+			function hideCartIcon() {
+                cartIcon.visible=false;
+			}
+			function hideSizeSelector() {
+                sizeSelector.visible=false;
+			}
+			function resetSizeSelected() {
+                sizeSelected='';
+			}
+            function createSizeMesh(size,sizeNumber) {
+                var loader = new THREE.TextureLoader();
+                var sizeTexture = loader.load( size + '_size.png' );
+				var sizeMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff,map: sizeTexture, transparent:true} );
+                var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), sizeMaterial );
+				mesh.position.y = 150 ;
+				mesh.rotation.x = - Math.PI;
+				mesh.rotation.z = Math.PI;
+                mesh.name=size;
+                mesh.visible=false;
+                sizes.push(mesh);
+                objects.push(mesh);
+                scene.add(mesh);
+            }
+            function moveSizesAndCartIcon(productPosition) {
+                for (var i = 0; i < sizes.length; i++) {
+                    sizes[i].position.x=productPosition.x + 83.333 +20 -40*i;
+                    sizes[i].position.z=productPosition.z;
+                }
+                sizeSelector.position.x=productPosition.x + 83.333 -20;
+                sizeSelector.position.z=productPosition.z;
+                cartIcon.position.x=productPosition.x - 83.333 +20;
+                cartIcon.position.z=productPosition.z;
+            }
+			function drawCartItems(cartItems) {
+                var loader = new THREE.TextureLoader();
+                for (var i = 0; i < cartItems.length; i++) {
+                    var item = cartItems[i].substring(0,3);
+                    var size = cartItems[i].substring(3,5);
+                    var texture = loader.load( item + '.png' );
+				    var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true} );
+                    var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 100, 100 ), material );
+                    mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 200,spriteyCart.position.z + i*150 - 75 * (cartItems.length -1));
+				    mesh.rotation.y = - Math.PI/2;
+				    mesh.rotation.z = - Math.PI;
+                    scene.add(mesh);
+                    cartItemMeshes.push(mesh);
+                }
+			}
+			function drawNewCartItem(item,size) {
+                shiftCartItems(75);
+                var loader = new THREE.TextureLoader();
+                var texture = loader.load( item + '.png' );
+                var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true} );
+                var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 100, 100 ), material );
+                mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 200,spriteyCart.position.z + cartItemMeshes.length*150 - 75 * cartItemMeshes.length);
+                mesh.rotation.y = - Math.PI/2;
+                mesh.rotation.z = - Math.PI;
+                scene.add(mesh);
+                cartItemMeshes.push(mesh);
+			}
+			function shiftCartItems(shift) {
+                for (var i = 0; i < cartItemMeshes.length; i++) {
+                    cartItemMeshes[i].position.z-=shift;
+                }
+			}
+			function removeOldCartItems() {
+                for (var i = 0; i < cartItemMeshes.length; i++) {
+                    scene.remove(cartItemMeshes[i]);
+                }
+                cartItemMeshes=[];
 			}
 		</script>
 	</body>
