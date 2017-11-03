@@ -21,6 +21,17 @@
                 box-sizing: border-box;
 				text-align: right;
 			}
+			#form {
+				position: absolute;
+				padding-top: 20px;
+				padding-bottom: 20px;
+				padding-right: 20px;
+				width: 100%;
+                position: fixed; 
+                bottom:5%;
+                box-sizing: border-box;
+				text-align: center;
+			}
 			a {
 				text-decoration: underline;
 				cursor: pointer;
@@ -35,20 +46,22 @@
 			<span id="goToStoreSeparator" hidden> | </span>
 			<a id ="goToCartButton" onclick="goToCart();">Go to Cart</a>
 			<!--<a onclick="togglePins();">Pins</a>-->
-			<!--<form id="form" action="/charge" method="post">
-				<article>
-					<label>Amount: $5.00</label>
-				</article>
-				<script src="//checkout.stripe.com/v2/checkout.js" data-key=<%= keyPublishable %> data-locale="auto" data-description="Sample Charge" data-amount="500" class="stripe-button"></script>
-			</form>-->
 		</div>
-
+        <form hidden id="form" action="/charge" method="post">
+                <article>
+					<label id="priceLabel">Amount: $5.00</label>
+				</article>
+                <input hidden id ="amountForm" name="amountForm" type="text">
+                <input hidden id ="cartForm" name="cartForm" type="text">
+<!--				<script src="//checkout.stripe.com/v2/checkout.js" data-key=<%= keyPublishable %> data-locale="auto" data-description="Sample Charge" data-amount="500" class="stripe-button"></script>-->
+        </form>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         
 		<script src="https://threejs.org/build/three.js"></script>
 
 		<script src="https://threejs.org/examples/js/Detector.js"></script>
-		<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+<!--		<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>-->
+		<script src="OrbitControls.js"></script>
 		<script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 
 		<script src="https://threejs.org/examples/js/Cloth.js"></script>
@@ -111,6 +124,8 @@
             var sizeSelected='';
             var cartIcon;
             var cartItemMeshes=[];
+            var cart = {};
+            var itemsCount;
 			//end Alex Select Tee
 			//sphere in clothjs
 			var sphere ={};
@@ -386,6 +401,11 @@
     				//controls.lookSpeed = 0.05;
     				//controls.movementSpeed = 50;
 				// performance monitor
+                //MODIF CART CONTROLS
+                controls.maxTargetUp=200;
+                controls.maxTargetDown=200;
+                controls.maxTargetLeft=spriteyCart.position.z;
+                controls.maxTargetRight=spriteyCart.position.z;
 				//Debut Alex Select Tee
 				raycaster = new THREE.Raycaster();
 				mouse = new THREE.Vector2();
@@ -396,6 +416,8 @@
 				container.appendChild( stats.dom );
 				//
 				window.addEventListener( 'resize', onWindowResize, false );
+                //Prevent ajax requests from caching
+                $.ajaxSetup({cache : false});
                 //Draw items already in cart
                 $.ajax({
                     url : '/cartItems', // La ressource ciblée
@@ -403,7 +425,16 @@
                     dataType : 'json',
                     success : function(response){
                         console.log('success2');
-                        drawCartItems(response);
+                        cart = response;
+                        var skuCount=0;
+                        itemsCount=0;
+                        for (var sku in cart) {
+                            skuCount++;
+                            itemsCount+=cart[sku];
+                        }
+                        drawCartItems(cart,skuCount);
+                        setStripeAmount();
+                        setHTMLForm();
                     },
                     error : function(error){
                         console.log('error2');
@@ -589,7 +620,17 @@
                     dataType : 'json',
                     success : function(response){
                         console.log('success');
-                        drawNewCartItem(productname,sizeName);
+                        if(response==1){
+                            drawNewCartItem(productname,sizeName);
+                            cart[productname+sizeName]=1;
+                        }
+                        else{
+                            cart[productname+sizeName]++;
+                        }
+                        itemsCount++;
+                        setStripeAmount();
+                        setHTMLForm();
+                        goToCart();
                     },
                     error : function(error){
                         console.log('error');
@@ -600,7 +641,6 @@
 //				req.open('POST', '/ajax', true);
 //				req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 //				req.send("variable="+productname+sizeName);
-                goToCart();
 			}
 			function goToCart() {
                 $.ajax({
@@ -624,10 +664,12 @@
                 //selectedSprite=spriteyCart;
                 //removeSelectedSpriteFromIntersectionObjects(spriteyCart.name);
 				document.getElementById("goToCartButton").innerHTML='Go back to store';
-				document.getElementById("goToCartButton").setAttribute('onclick','goToStore();')
+				document.getElementById("goToCartButton").setAttribute('onclick','goToStore();');
+				document.getElementById("form").removeAttribute("hidden");
+                setCartControls();
 				camera.lookAt(spriteyCart.position);
 				controls.target.set(spriteyCart.position.x,spriteyCart.position.y-200,spriteyCart.position.z);
-				camera.position.set(spriteyCart.position.x-3000,spriteyCart.position.y-200,spriteyCart.position.z);
+				camera.position.set(spriteyCart.position.x-2000,spriteyCart.position.y-200,spriteyCart.position.z);
 				controls.update();
 			}
 			function goToStore() {
@@ -640,7 +682,9 @@
                 //selectedSprite=spriteyStore;
                 //removeSelectedSpriteFromIntersectionObjects(spriteyStore.name);
 				document.getElementById("goToCartButton").innerHTML='Go to cart';
-				document.getElementById("goToCartButton").setAttribute('onclick','goToCart();')
+				document.getElementById("goToCartButton").setAttribute('onclick','goToCart();');
+				document.getElementById("form").setAttribute("hidden","");
+                setStoreControls();
                 controls.target.set(spriteyStore.position.x,spriteyStore.position.y/2,spriteyStore.position.z);
 				camera.position.set(spriteyStore.position.x,spriteyStore.position.y,spriteyStore.position.z-3000);
 				camera.lookAt(spriteyStore.position);
@@ -654,6 +698,7 @@
 			function setSelectedProduct(product) {
 				document.getElementById("goToCartButton").innerHTML='Go to cart';
 				document.getElementById("goToCartButton").setAttribute('onclick','goToCart();');
+				document.getElementById("form").setAttribute("hidden","");
                 hideSizes();
                 resetSizeSelected()
                 moveSizesAndCartIcon(product.position);
@@ -663,6 +708,7 @@
 				selectedTee = product;
                 setProductText(product.name);
                 removeSelectedProductFromIntersectionObjects(product.name);
+                setStoreControls();
 				camera.lookAt(product.position);
 				controls.target= product.position.clone();
                 camera.position.set(product.position.x, product.position.y + 300, product.position.z - 900);
@@ -763,44 +809,89 @@
                 cartIcon.position.x=productPosition.x - 83.333 +20;
                 cartIcon.position.z=productPosition.z;
             }
-			function drawCartItems(cartItems) {
+			function drawCartItems(cartItems,itemsNumber) {
                 var loader = new THREE.TextureLoader();
-                for (var i = 0; i < cartItems.length; i++) {
-                    var item = cartItems[i].substring(0,3);
-                    var size = cartItems[i].substring(3,5);
+                var skuCounter=0;
+                controls.maxTargetLeft=spriteyCart.position.z - 150 * (itemsNumber -1);
+                controls.maxTargetRight=spriteyCart.position.z + 150 * (itemsNumber -1);
+                for (var sku in cartItems) {
+                    var item = sku.substring(0,3);
+                    var size = sku.substring(3,5);
                     var texture = loader.load( item + '.png' );
 				    var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true} );
-                    var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 100, 100 ), material );
-                    mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 200,spriteyCart.position.z + i*150 - 75 * (cartItems.length -1));
+                    var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 250, 250 ), material );
+                    mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 200,spriteyCart.position.z + skuCounter*300 - 150 * (itemsNumber -1));
 				    mesh.rotation.y = - Math.PI/2;
 				    mesh.rotation.z = - Math.PI;
                     scene.add(mesh);
                     cartItemMeshes.push(mesh);
+                    skuCounter++;
                 }
 			}
 			function drawNewCartItem(item,size) {
-                shiftCartItems(75);
+                shiftCartItems(150);
                 var loader = new THREE.TextureLoader();
                 var texture = loader.load( item + '.png' );
                 var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true} );
-                var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 100, 100 ), material );
-                mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 200,spriteyCart.position.z + cartItemMeshes.length*150 - 75 * cartItemMeshes.length);
+                var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 250, 250 ), material );
+                mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 200,spriteyCart.position.z + cartItemMeshes.length*300 - 150 * cartItemMeshes.length);
                 mesh.rotation.y = - Math.PI/2;
                 mesh.rotation.z = - Math.PI;
                 scene.add(mesh);
                 cartItemMeshes.push(mesh);
+                controls.maxTargetLeft-=150;
+                controls.maxTargetRight+=150;
 			}
 			function shiftCartItems(shift) {
                 for (var i = 0; i < cartItemMeshes.length; i++) {
                     cartItemMeshes[i].position.z-=shift;
                 }
 			}
-			function removeOldCartItems() {
-                for (var i = 0; i < cartItemMeshes.length; i++) {
-                    scene.remove(cartItemMeshes[i]);
+//			function removeOldCartItems() {
+//                for (var i = 0; i < cartItemMeshes.length; i++) {
+//                    scene.remove(cartItemMeshes[i]);
+//                }
+//                cartItemMeshes=[];
+//			}
+            function setStripeAmount(){
+                if(itemsCount>0){
+                    $('[class*="stripe"]').remove();
+                    var script= document.createElement('script');
+                    script.type= 'text/javascript';
+                    script.src= '//checkout.stripe.com/v2/checkout.js';
+                    script.setAttribute("data-key","pk_test_DfOWIh4hmFl3Hw8Fx2Rx6mVN");
+                    script.setAttribute("data-locale","auto");
+                    script.setAttribute("data-description", "Chemises en T");
+                    script.setAttribute("data-amount", 25*itemsCount*100);
+                    script.className="stripe-button";
+                    $("#form").append(script);
                 }
-                cartItemMeshes=[];
-			}
+            }
+            function setHTMLForm(){
+                $("#priceLabel").text("Amount: $" + itemsCount*25 + ".00");
+                $("#amountForm").attr("value",itemsCount*25);
+                $("#cartForm").attr("value",JSON.stringify(cart));
+            }
+            function setCartControls(){
+                controls.enableRotate=false;
+                controls.enablePan=true;
+                controls.mouseButtons = {
+                    ORBIT: THREE.MOUSE.RIGHT,
+                    ZOOM: THREE.MOUSE.MIDDLE,
+                    PAN: THREE.MOUSE.LEFT
+                }
+                controls.enablePanAlexModif=true;
+            }
+            function setStoreControls(){
+                controls.enableRotate=true;
+                controls.enablePan=false;
+                controls.mouseButtons = {
+                    ORBIT: THREE.MOUSE.LEFT,
+                    ZOOM: THREE.MOUSE.MIDDLE,
+                    PAN: THREE.MOUSE.RIGHT
+                }
+                controls.enablePanAlexModif=false;
+            }
 		</script>
 	</body>
 </html>

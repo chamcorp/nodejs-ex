@@ -78,7 +78,8 @@ app.use('/',session({
     store: new RedisStore({host:'redis-18915.c15.us-east-1-2.ec2.cloud.redislabs.com',port: '18915'}),
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { maxAge: 86400000 }
 }));
 
 
@@ -176,37 +177,50 @@ app.get('/pagecount', function (req, res) {
 
 //Stripe charge
 app.post("/charge", (req, res) => {
-  let amount = 500;
-
-  stripe.customers.create({
-     email: req.body.stripeEmail,
-    source: req.body.stripeToken
-  })
-  .then(customer =>
-    stripe.charges.create({
-      amount,
-      description: "Sample Charge",
-         currency: "usd",
-         customer: customer.id
-    }))
-  .then(charge => {
-        var redisClient = req.sessionStore.client;
-        redisClient.hset('order:' + req.session.id, 'test' , 1 , res.render("charge.html"))
-  });
+    let amount = req.body.amountForm;
+    let centAmount = req.body.amountForm*100;
+    let cart = JSON.parse(req.body.cartForm);
+    let cartAmount=0;
+    let cartKeysList=[];
+    for(var field in cart){
+        cartAmount+= cart[field]*25;
+        cartKeysList.push(field);
+    }
+    if(amount!=cartAmount){
+        res.send(' ERROR :Amount does not match cart, please replace your order ');
+    }
+    else{
+        stripe.customers.create({
+            email: req.body.stripeEmail,
+            source: req.body.stripeToken
+        })
+        .then(customer =>
+        stripe.charges.create({
+            amount :centAmount,
+            description: "Sample Charge",
+            currency: "usd",
+            customer: customer.id
+        }))
+        .then(charge => {
+            var redisClient = req.sessionStore.client;
+            redisClient.hset('order:' + req.session.id, 'test' , 1 , function(err){
+                redisClient.hdel('cart:' + req.session.id, cartKeysList, function(err){
+                    res.render("charge.html", { amount });
+                    });
+            });
+        });
+    }
 });
 
 app.get('/cart', function (req, res) {
     var cartText='';
     req.sessionStore.client.hgetall('cart:'+ req.session.id, function (err, teesSelected) {
-        console.log(teesSelected);
         var fieldCounter=0;
         for (var field in teesSelected){
             cartText+=teesSelected[field];
             cartText+=' ';
             cartText+=field;
             fieldCounter++;
-            console.log(fieldCounter);
-            console.log(Object.keys(teesSelected).length);
             if(fieldCounter!=Object.keys(teesSelected).length){
                 cartText+=' and ';
             }
@@ -231,22 +245,32 @@ app.post("/ajax", (req, res) => {
             sessData.selected = someAttribute;
         }
         var redisClient = req.sessionStore.client;
-        redisClient.hset('cart:' + req.session.id, req.body.variable, 1, function (err,result){
-            res.json('');
+        redisClient.hget('cart:' + req.session.id, req.body.variable, function (err,skuQuantity){
+            var newQuantity;
+            var draw;
+            if(skuQuantity==null){
+                newQuantity=1;
+                draw=1;
+            }
+            else{
+                newQuantity=parseInt(skuQuantity)+1;
+                draw=0;
+            }
+            redisClient.hset('cart:' + req.session.id, req.body.variable, newQuantity, function (err,result){
+                res.json(draw);
+            });
         });
     }
 });
 
 app.get("/cartItems", (req, res) => {
-    var products=[];
+    var cart={};
     var redisClient = req.sessionStore.client;
-    redisClient.hkeys('cart:' + req.session.id, function (err, replies) {
-        console.log(replies.length + " replies:");
-        replies.forEach(function (reply, i) {
-            console.log("    " + i + ": " + reply);
-            products.push(reply);
-        });
-        res.json(products);
+    redisClient.hgetall('cart:' + req.session.id, function (err, replies) {
+        for (var sku in replies){
+            cart[sku]=parseInt(replies[sku]);
+        }
+        res.json(cart);
     });
 });
 
