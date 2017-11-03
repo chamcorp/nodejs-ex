@@ -177,7 +177,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 			scope.target.add( panOffset );
             
             //MODIF ALEX
-            if(scope.enablePanAlexModif){
+            if(scope.enablePanAlexModif === true){
                 if (scope.target.y > scope.maxTargetUp){
                     scope.target.setY(scope.maxTargetUp);
                 }
@@ -810,14 +810,24 @@ THREE.OrbitControls = function ( object, domElement ) {
 		switch ( event.touches.length ) {
 
 			case 1:	// one-fingered touch: rotate
+                
+                if (scope.enablePanAlexModif === true){
+                    
+                    handleTouchStartPan( event );
 
-				if ( scope.enableRotate === false ) return;
+                    state = STATE.TOUCH_PAN;
+                    
+                    break;
+                }
+                else{
+                    if ( scope.enableRotate === false ) return;
 
-				handleTouchStartRotate( event );
+                    handleTouchStartRotate( event );
 
-				state = STATE.TOUCH_ROTATE;
+                    state = STATE.TOUCH_ROTATE;
 
-				break;
+                    break;
+                }
 
 			case 2:	// two-fingered touch: dolly
 
@@ -864,12 +874,25 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 			case 1: // one-fingered touch: rotate
 
-				if ( scope.enableRotate === false ) return;
-				if ( state !== STATE.TOUCH_ROTATE ) return; // is this needed?...
+                if (scope.enablePanAlexModif === true){
 
-				handleTouchMoveRotate( event );
+                    if ( scope.enablePan === false ) return;
+                    if ( state !== STATE.TOUCH_PAN ) return; // is this needed?...
 
-				break;
+                    handleTouchMovePan( event );
+
+                    break;
+                    
+                }
+                else{
+                    if ( scope.enableRotate === false ) return;
+                    if ( state !== STATE.TOUCH_ROTATE ) return; // is this needed?...
+
+                    handleTouchMoveRotate( event );
+
+                    break;
+                    
+                }
 
 			case 2: // two-fingered touch: dolly
 
