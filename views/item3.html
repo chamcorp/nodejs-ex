@@ -976,8 +976,8 @@
 			}
             function setStripeAmount(){
                 console.log("setStripeAmount");
+                $('[class*="stripe"]').remove();
                 if(itemsCount>0){
-                    $('[class*="stripe"]').remove();
                     var script= document.createElement('script');
                     script.type= 'text/javascript';
                     script.src= '//checkout.stripe.com/v2/checkout.js';
