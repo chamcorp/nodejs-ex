@@ -233,7 +233,7 @@ app.get('/cart', function (req, res) {
 });
 
 
-//Ajax send
+//Ajax add product
 app.post("/ajax", (req, res) => {
     var products=[];
     if(req.body.variable){
@@ -259,6 +259,18 @@ app.post("/ajax", (req, res) => {
             redisClient.hset('cart:' + req.session.id, req.body.variable, newQuantity, function (err,result){
                 res.json(draw);
             });
+        });
+    }
+});
+
+//Ajax remove product
+app.post("/delete", (req, res) => {
+    if(req.body.variable){
+        var someAttribute = '';
+        console.log('deleting' + req.body.variable);
+        var redisClient = req.sessionStore.client;
+        redisClient.hdel('cart:' + req.session.id, req.body.variable, function (err,result){
+            res.json('');
         });
     }
 });

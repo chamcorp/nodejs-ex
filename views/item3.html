@@ -67,7 +67,8 @@
 		<script src="OrbitControls.js"></script>
 		<script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 
-		<script src="https://threejs.org/examples/js/Cloth.js"></script>
+<!--		<script src="https://threejs.org/examples/js/Cloth.js"></script>-->
+		<script src="Cloth.js"></script>
 
 		<script type="x-shader/x-fragment" id="fragmentShaderDepth">
 			#include <packing>
@@ -597,7 +598,14 @@
                         addToCart(selectedTee.name,sizeSelected);
                     }
                     else if(intersects[0].object.name.substr(0,5)=="cross"){
-                        //removeFromCart(intersects[0].object.name.substr(5,8));
+                        var sku = intersects[0].object.name.substr(5,10);
+                        removeFromCart(sku);
+                        itemsCount-= cart[sku];
+                        cart[sku]=0;
+                        setStripeAmount();
+                        setHTMLForm();
+                        removeFromGraphicCart(sku);
+                        shiftCartItemsAfterDelete(150,sku);
                     }
                     else if(intersects[0].object.type=="Mesh"){
                         setSelectedProduct(intersects[0].object.parent);
@@ -613,6 +621,7 @@
 				}
 			}
 			function addToCart( productname , sizeName ) {
+                console.log("addToCart");
                 if(sizeName==''){
                     sizeSelector.visible=false;
                     for (var i = 0; i < sizes.length; i++) {
@@ -620,6 +629,7 @@
                     }
                     return;
                 }
+                hideCartIcon();
 //				var spriteyprod = makeTextSprite( productname, { fontsize: 72, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
 //				spriteyprod.position.set(-10000,300,-500);
 //				scene.add( spriteyprod );
@@ -656,6 +666,7 @@
 //				req.send("variable="+productname+sizeName);
 			}
 			function goToCart() {
+                console.log("goToCart");
                 $.ajax({
                     url : '/cartItems', // La ressource ciblée
                     type : 'GET', // Le type de la requête HTTP.
@@ -686,6 +697,7 @@
 				controls.update();
 			}
 			function goToStore() {
+                console.log("goToStore");
                 removeSelectedProduct();
                 hideCartIcon();
                 resetSizeSelected()
@@ -707,11 +719,13 @@
 				controls.update();
 			}
 			function setProductText(productName) {
+                console.log("setProductText");
 				document.getElementById("selected").innerHTML = productName + " is selected";
 				document.getElementById("goToStoreButton").removeAttribute("hidden");
 				document.getElementById("goToStoreSeparator").removeAttribute("hidden");
 			}
 			function setSelectedProduct(product) {
+                console.log("setSelectedProduct");
 				document.getElementById("goToCartButton").innerHTML='Go to cart';
 				document.getElementById("goToCartButton").setAttribute('onclick','goToCart();');
 				document.getElementById("form").setAttribute("hidden","");
@@ -731,12 +745,14 @@
 				controls.update();
 			}
 			function removeProductText() {
+                console.log("removeProductText");
 				document.getElementById("selected").innerHTML = "";
 				document.getElementById("selectedSizeSpan").innerHTML = "";
 				document.getElementById("goToStoreSeparator").setAttribute("hidden","");
 				document.getElementById("goToStoreButton").setAttribute("hidden","");
 			}
 			function removeSelectedProductFromIntersectionObjects(productName) {
+                console.log("removeSelectedProductFromIntersectionObjects");
                 for (var i = 0; i < objects.length; i++) {
 					if(objects[i].parent.name == productName){
                         objects.splice(i,2);
@@ -745,6 +761,7 @@
 				}
 			}
 			function reAddSelectedProductToIntersectionObjects() {
+                console.log("reAddSelectedProductToIntersectionObjects");
                 if(selectedTee){
                     objects.push(selectedTee.children[0]);
                     objects.push(selectedTee.children[1]);
@@ -752,10 +769,12 @@
                 }
 			}
 			function removeSelectedProduct() {
+                console.log("removeSelectedProduct");
                 removeProductText();
                 reAddSelectedProductToIntersectionObjects();
 			}
 			function removeSelectedSpriteFromIntersectionObjects(spriteName) {
+                console.log("removeSelectedSpriteFromIntersectionObjects");
                 for (var i = 0; i < objects.length; i++) {
 					if(objects[i].name == spriteName){
                         objects.splice(i,1);
@@ -764,6 +783,7 @@
               }
 			}
 			function setBackgroundFromSelectedSize(sizeName) {
+                console.log("setBackgroundFromSelectedSize");
                 for (var i = 0; i < sizes.length; i++) {
 					if(sizes[i].name == sizeName){
                         sizeBackground.position.set(sizes[i].position.x,sizes[i].position.y,sizes[i].position.z) ;
@@ -776,6 +796,7 @@
               }
 			}
 			function setSizesPositions() {
+                console.log("setSizesPositions");
                 sizeBackground.visible=false;
                 cartIcon.visible=false;
                 for (var i = 0; i < sizes.length; i++) {
@@ -783,25 +804,31 @@
                 }
 			}
 			function showSizeSelector() {
+                console.log("showSizeSelector");
                 cartIcon.visible=true;
                 sizeSelector.visible=true;
 			}
 			function hideSizes() {
+                console.log("hideSizes");
                 sizeBackground.visible=false;
                 for (var i = 0; i < sizes.length; i++) {
                         sizes[i].visible=false;
                 }
 			}
 			function hideCartIcon() {
+                console.log("hideCartIcon");
                 cartIcon.visible=false;
 			}
 			function hideSizeSelector() {
+                console.log("hideSizeSelector");
                 sizeSelector.visible=false;
 			}
 			function resetSizeSelected() {
+                console.log("resetSizeSelected");
                 sizeSelected='';
 			}
             function createSizeMesh(size,sizeNumber) {
+                console.log("createSizeMesh");
                 var loader = new THREE.TextureLoader();
                 var sizeTexture = loader.load( size + '_size.png' );
 				var sizeMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff,map: sizeTexture, transparent:true} );
@@ -816,6 +843,7 @@
                 scene.add(mesh);
             }
             function moveSizesAndCartIcon(productPosition) {
+                console.log("moveSizesAndCartIcon");
                 for (var i = 0; i < sizes.length; i++) {
                     sizes[i].position.x=productPosition.x + 83.333 +20 -40*i;
                     sizes[i].position.z=productPosition.z;
@@ -826,6 +854,7 @@
                 cartIcon.position.z=productPosition.z;
             }
 			function drawCartItems(cartItems) {
+                console.log("drawCartItems");
                 var loader = new THREE.TextureLoader();
                 var skuCounter=0;
                 var textureCross = loader.load( 'cross.png' );
@@ -878,6 +907,7 @@
                 }
 			}
 			function drawNewCartItem(item,size) {
+                console.log("drawNewCartItem");
                 shiftCartItems(150);
                 var loader = new THREE.TextureLoader();
                 var texture = loader.load( item + '.png' );
@@ -925,17 +955,27 @@
                 cartItemMeshes.push(mesh);
 			}
 			function shiftCartItems(shift) {
+                console.log("shiftCartItems");
                 for (var i = 0; i < cartItemMeshes.length; i++) {
                     cartItemMeshes[i].position.z-=shift;
                 }
 			}
-//			function removeOldCartItems() {
-//                for (var i = 0; i < cartItemMeshes.length; i++) {
-//                    scene.remove(cartItemMeshes[i]);
-//                }
-//                cartItemMeshes=[];
-//			}
+			function shiftCartItemsAfterDelete(standardShift,sku) {
+                console.log("shiftCartItemsAfterDelete");
+                var index=1000;
+                for (var i = 0; i < cartItemMeshes.length; i++) {
+                    cartItemMeshes[i].position.z+=standardShift;
+                    if(cartItemMeshes[i].name==sku){
+                        index=i;
+                    }
+                    if(i>index+3){
+                        cartItemMeshes[i].position.z-=300;
+                    }
+                }
+                cartItemMeshes.splice(index,4);
+			}
             function setStripeAmount(){
+                console.log("setStripeAmount");
                 if(itemsCount>0){
                     $('[class*="stripe"]').remove();
                     var script= document.createElement('script');
@@ -950,11 +990,13 @@
                 }
             }
             function setHTMLForm(){
+                console.log("setHTMLForm");
                 $("#priceLabel").text("Amount: $" + itemsCount*25 + ".00");
                 $("#amountForm").attr("value",itemsCount*25);
                 $("#cartForm").attr("value",JSON.stringify(cart));
             }
             function setCartControls(){
+                console.log("setCartControls");
                 controls.enableRotate=false;
                 controls.enablePan=true;
                 controls.mouseButtons = {
@@ -965,6 +1007,7 @@
                 controls.enablePanAlexModif=true;
             }
             function setStoreControls(){
+                console.log("setStoreControls");
                 controls.enableRotate=true;
                 controls.enablePan=false;
                 controls.mouseButtons = {
@@ -974,25 +1017,77 @@
                 }
                 controls.enablePanAlexModif=false;
             }
-            function removeFromCart(itemNumber){
-//                $.ajax({
-//                    url : '/delete', // La ressource ciblée
-//                    type : 'POST', // Le type de la requête HTTP.
-//                    data : "variable="+itemNumber,
-//                    dataType : 'json',
-//                    success : function(response){
-//                        console.log('success');
-//                    },
-//                    error : function(error){
-//                        console.log('error');
-//                    }
-//                });
+            function removeFromCart(sku){
+                console.log("removeFromCart");
+                $.ajax({
+                    url : '/delete', // La ressource ciblée
+                    type : 'POST', // Le type de la requête HTTP.
+                    data : "variable="+sku,
+                    dataType : 'json',
+                    success : function(response){
+                        skuCount--;
+                        console.log('delete success');
+                    },
+                    error : function(error){
+                        console.log('error');
+                    }
+                });
+            }
+            function removeFromGraphicCart(sku){
+                console.log("removeFromGraphicCart");
+                console.log(sku);
+                scene.getObjectByName('qt'+sku).visible=false;
+                scene.getObjectByName('cross'+sku).visible=false;
+                scene.getObjectByName('size'+sku).visible=false;
+                scene.getObjectByName(sku).visible=false;
+                //cleaning size
+                for (var i = 0; i < objects.length; i++) {
+					if(objects[i].name == 'cross'+sku){
+                        objects.splice(i,1);
+                        break;
+                    }
+                }
+                var obj = scene.getObjectByName('qt'+sku);
+                scene.remove(obj);
+                obj.geometry.dispose();
+                var texture = obj.material.map;
+                obj.material.dispose();
+                texture.dispose();
+                obj = scene.getObjectByName(sku);
+                scene.remove(obj);
+                obj.geometry.dispose();
+                var texture = obj.material.map;
+                obj.material.dispose();
+                texture.dispose();
+                obj = scene.getObjectByName('cross'+sku);
+                scene.remove(obj);
+                obj.geometry.dispose();
+                var texture = obj.material.map;
+                obj.material.dispose();
+                texture.dispose();
+                obj = scene.getObjectByName('size'+sku);
+                scene.remove(obj);
+                if(itemsCount>0){
+                    controls.maxTargetLeft+=150;
+                    controls.maxTargetRight-=150;
+                }
             }
             function updateItemQuantity(item,size){
+                console.log("updateItemQuantity "+item+size);
                 var loader = new THREE.TextureLoader();
-                var texture = loader.load( 'qt' + cart[item+size] + '.png' );
-				var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true} );
-                scene.getObjectByName('qt' + item + size).material=material;
+                loader.load( 'qt' + cart[item+size] + '.png' ,function(texture){
+                    console.log("updateItemQuantity texture loaded");
+                    var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true} );
+                    var obj = scene.getObjectByName('qt'+ item + size);
+                    var oldTexture = obj.material.map;
+                    obj.material.dispose();
+                    oldTexture.dispose();
+                    obj.material=material;
+                },function(xhr){
+                    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+                },function(xhr){
+                    console.error( 'An error happened' );
+                });
             }
 		</script>
 	</body>
