@@ -182,9 +182,12 @@ app.post("/charge", (req, res) => {
     let cart = JSON.parse(req.body.cartForm);
     let cartAmount=0;
     let cartKeysList=[];
+    let orderKeysValuesList=[];
     for(var field in cart){
         cartAmount+= cart[field]*25;
         cartKeysList.push(field);
+        orderKeysValuesList.push(field);
+        orderKeysValuesList.push(cart[field]);
     }
     if(amount!=cartAmount){
         res.send(' ERROR :Amount does not match cart, please replace your order ');
@@ -203,10 +206,12 @@ app.post("/charge", (req, res) => {
         }))
         .then(charge => {
             var redisClient = req.sessionStore.client;
-            redisClient.hset('order:' + req.session.id, 'test' , 1 , function(err){
-                redisClient.hdel('cart:' + req.session.id, cartKeysList, function(err){
-                    res.render("charge.html", { amount });
+            redisClient.hincrby('transactionId', req.body.stripeEmail, 1, function(err, transactionId) {
+                redisClient.hmset('order:' + req.body.stripeEmail + ':' + transactionId, orderKeysValuesList, function(err){
+                    redisClient.hdel('cart:' + req.session.id, cartKeysList, function(err){
+                        res.render("charge.html", { amount });
                     });
+                });
             });
         });
     }
