@@ -16,32 +16,59 @@
 				position: absolute;
 				padding-top: 20px;
 				padding-bottom: 20px;
+				padding-right: 20px;
 				width: 100%;
+                box-sizing: border-box;
+				text-align: right;
+			}
+			#form {
+				position: absolute;
+				padding-top: 20px;
+				padding-bottom: 20px;
+				padding-right: 20px;
+				width: 100%;
+                position: fixed; 
+                bottom:5%;
+                box-sizing: border-box;
 				text-align: center;
 			}
 			a {
 				text-decoration: underline;
 				cursor: pointer;
 			}
+            canvas {
+                display: block; /* fix necessary to remove space at bottom of canvas */
+            }
 		</style>
+		<link rel="shortcut icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAJcEhZcwAADdcAAA3XAUIom3gAAAJkUExURUdwTP93Q/93Q/93Q/94RP94RP93Q/93Q/93Q/93Q/93Q/94RP93Q/92Q/93Q/94RP94RP92Q/93Q/95Q/93Q/93Q/93Q/93Q/93Q/92Q/93Q/93Q/93Q/93Q/93Q/93Q/92RP92RP93Q/93Q/94Qv92RP93Q/93Q/93Q/93Q/93Q/93Q/93Q/93Q/93Q/94RP93Q/92Q/93Q/92RP94Q/93Q/93RP93Q/93Q/93Q/92Rf92Q/94Q/93Q/93Qf93Q/93Q/93Q/93Q/93Q/93Q/93Q/93Q/93Q/96QP92Q/93Q/93Q/93Q/93Q/92Q/94Q/93Q/92RP94Q/93Q/93Qv93Q/92RP92Q/93Q/93Q/92RP93Q/93Q/93Q/93Q/92RP93Q/93Q/93Q/93Q/93RP93Q/93RP93Qv93Q/92RP94Qv93Qv92RP94RP91Qf92Q/94Q/92RP93Q/91RP92RP93Q/93Q/93Q/93Q/92Q/93Q/94RP93Q/93Q/93Q/94RP92Rf92Q/93Q/94RP93Q/93Qv93Qv94Qv92Q/94RP93Q/93Q/93Q/94Rf91Rf95Q/93Q/93Q/93Q/93Q/94Qv94Qv93Q/93Q/92Q/93Q/93Qv95Q/94Q/92Qv93Q/93Q/94RP93Q/93Q/93Q/93Q/94Rf94RP94RP93Q/94Q/93Q/92Qv94Q/94RP92Q/93Q/96Qf94Q/94QP93Q/93Q/94Q/92RP93Q/96Qf93Q/93Q/94Qv92Q/93Q/94RP93Q/93Q/94RP93Q/91RP93Q/93Q/93Q/93Q/93Q/93RP93Q/94RMf/xMMAAADMdFJOUwB4ArkBApsBfpPTQsVEDSMuBAQCfJTWddQF6drq2AOSFgHMmQ8Xf+ORhb/n5NwFA5ABcSECMwFPiYwCAwN2AcCBTevZc5xhdwEIiN3mrAs+6AseqVWeDBF9mBOH89uuDYvxl9e5vBwD4AMCARAPAhA5JR8WHYJ7s+VAJkUGtbo5L0ZQOpUFAhFFP8YOxxsGA2CrlmcTEs/iE9VXCBAmNCgxEM6v0hknHvsIEiU7JBR0DxEJEbY6Nj8OJcoUFaAqyao0nxWPveEn0TK3IrEl8yAAAAIXSURBVDjL3ZOFcttAFEVv3VSW3TRNU6mRrZhjttswp2FmZsYyM6TMzMzMzMzwU92NYkdu8wU9o1mt3j2zb1caAZQJkJjpH2RFwgzEJ/EGlSMLJpAry6Ey8EnxpDxCGGK0yZyNzfR2YmAAnd5M1sYla2NIMJKHa2MT2XSu9ra9H+j3nK3l0tnEWG24ZJA8whpl55m6rqcf3j548an9Tlcdw9ujrBHDhp7kRpVuLpm39H5+Mjj4601vC3mI1PFGYuiB3Owlqpx50GhSC119H7+//NnnKkzVaIihMmbnAvmlxi3iAigAJYq4nDavyBWRKSlE6g5ZS/NRUuE8th1xdDcJKbj58NZppCTQXIEzZmdFCSqrhWJMl84TraejPpqOClJ0CtWVKKtp8LDYGmYaVpQE2mzxAZJznoaaMpSbLc1uDtsgIwh7b9xHo7vZYi4HqoSmE8eZw0thkgnXtd/ei/eahCraq15tOXKwdbPs4wTh7o9n3a8t6np6OgU6zO37XDsDhN/i4+dfX3XQnBpH23aMnxggTBbetX55JOWE/RmT/hbUoUKIL1cibdcYQs9F+kIlYWrwGMK0kP9RWIO1U3xocO1KaE+AsHHdUMAKVy9dkK+QFrxqfQafx/jI674snj+52ydgPlYUrG4cJ6OAPXdqD/xCHBauZJbbWBmcw70Js/w9lVi0jPy8oxj44g1kJ6PMwb/Mlm5/AEHGdD/kL2cwAAAAAElFTkSuQmCC" type="image/x-icon">
 	</head>
 
 	<body>
-		<div id="info">Item 2 | <a id="nextItem" href="/">Next Item</a><br/>
-			Utopian Ocean <span id="selected" ></span><br/>
-			<a onclick="wind = !wind;">Wind</a> <!--|
-			<a onclick="sphere.visible = !sphere.visible;">Ball</a> |-->
+		<div id="info"><span id="selected" ></span><span id="selectedSizeSpan" ></span><br/>
+			<a id ="goToStoreButton" onclick="goToStore();" hidden>Go Back to Store</a>
+			<span id="goToStoreSeparator" hidden> | </span>
+			<a id ="goToCartButton" onclick="goToCart();">Go to Cart</a>
 			<!--<a onclick="togglePins();">Pins</a>-->
 		</div>
-
+        <form hidden id="form" action="/charge" method="post">
+                <article>
+					<label id="priceLabel">Amount: $5.00</label>
+				</article>
+                <input hidden id ="amountForm" name="amountForm" type="text">
+                <input hidden id ="cartForm" name="cartForm" type="text">
+<!--				<script src="//checkout.stripe.com/v2/checkout.js" data-key=<%= keyPublishable %> data-locale="auto" data-description="Sample Charge" data-amount="500" class="stripe-button"></script>-->
+        </form>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        
 		<script src="https://threejs.org/build/three.js"></script>
 
 		<script src="https://threejs.org/examples/js/Detector.js"></script>
-		<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+<!--		<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>-->
+		<script src="OrbitControls.js"></script>
 		<script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 
-		<script src="https://threejs.org/examples/js/Cloth.js"></script>
-		<script src="https://threejs.org/examples/js/WaterShader.js"></script>
+<!--		<script src="https://threejs.org/examples/js/Cloth.js"></script>-->
+		<script src="Cloth.js"></script>
 
 		<script type="x-shader/x-fragment" id="fragmentShaderDepth">
 			#include <packing>
@@ -57,7 +84,8 @@
 		<script type="x-shader/x-vertex" id="vertexShaderDepth">
 			varying vec2 vUV;
 			void main() {
-				vUV = 0.75 * uv;
+				//vUV = 0.75 * uv;
+				vUV = uv;
 				vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
 				gl_Position = projectionMatrix * mvPosition;
 			}
@@ -84,63 +112,70 @@
 			var container, stats;
 			var camera, scene, renderer;
 			var clothGeometry;
-			var sphere;
 			var object;
 			var controls;
 			//Alex Select Tee
 			var raycaster;
 			var mouse;
 			var objects = [];
+			var selectedTee;
+			var selectedSprite;
+			var spriteyCart;
+			var spriteyStore;
+            var sizes = [];
+            var sizesChart = {s:0,m:1,l:2,xl:3};
+            var sizeBackground;
+            var sizeSelector;
+            var sizeSelected='';
+            var cartIcon;
+            var cartItemMeshes=[];
+            var cart = {};
+            var itemsCount=0;
+            var skuCount=0;
 			//end Alex Select Tee
-			//Alex ocean
-			var waterNormals, water;
-			var parameters = {
-				width: 2000,
-				height: 2000,
-				widthSegments: 250,
-				heightSegments: 250,
-				depth: 1500,
-				param: 4,
-				filterparam: 1
-			};
-			//end Alex Ocean
+			//sphere in clothjs
+			var sphere ={};
+			sphere.visible=false;
 			init();
 			animate();
-			function init() {
+			function init() {                
+                //Configuration espace
+                var espaceEntreTeesX = 1250;
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 				// scene
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0xcce0ff );
-				scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
+				scene.fog = new THREE.Fog( 0xcce0ff, 500, 20000 );
+				//scene.fog = new THREE.Fog( 0xeff5ff, 500, 10000 );
 				// camera
-				camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 20000 );
 				//camera.position.x = 1000;
 				//camera.position.y = 50;
 				//camera.position.z = 3000;
-				camera.position.x = 2000;
-				camera.position.y = 50;
-				camera.position.z = -500;
+				//camera.position.x = 2000;
+				//camera.position.y = 50;
+				//camera.position.z = -500;
 				scene.add( camera );
 				// lights
 				var light, materials;
 				scene.add( new THREE.AmbientLight( 0x666666 ) );
 				light = new THREE.DirectionalLight( 0xdfebff, 1.75 );
-				light.position.set( 50, 200, 100 );
+				light.position.set( 50, 500, -500 );
 				light.position.multiplyScalar( 1.3 );
 				light.castShadow = true;
 				light.shadow.mapSize.width = 1024;
 				light.shadow.mapSize.height = 1024;
-				var d = 1000;
+				var d = 1300;
 				light.shadow.camera.left = - d;
 				light.shadow.camera.right = d;
 				light.shadow.camera.top = d;
 				light.shadow.camera.bottom = - d;
-				light.shadow.camera.far = 10000;
+				light.shadow.camera.far = 5000;
 				scene.add( light );
 				// cloth material
 				var loader = new THREE.TextureLoader();
-				var clothTexture = loader.load( 'cola_face.png' );
+				var clothTexture = loader.load( '001.png' );
 				clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
 				clothTexture.anisotropy = 16;
 				var clothMaterial = new THREE.MeshPhongMaterial( {
@@ -149,7 +184,7 @@
 					side: THREE.FrontSide, //modif Alex
 					alphaTest: 0.5
 				} );
-				//cloth back material Alex
+				//cloth back white material Alex
 				var clothTexture2 = loader.load( 'dos_blanc.png' );
 				clothTexture2.wrapS = clothTexture2.wrapT = THREE.RepeatWrapping;
 				clothTexture2.anisotropy = 16;
@@ -158,19 +193,9 @@
 					map: clothTexture2,
 					side: THREE.BackSide,
 					alphaTest: 0.5
-				} );				
-				// cloth material 3
-				var clothTexture3 = loader.load( 'cola_face_miroir.png' );
-				clothTexture3.wrapS = clothTexture3.wrapT = THREE.RepeatWrapping;
-				clothTexture3.anisotropy = 16;
-				var clothMaterial3 = new THREE.MeshPhongMaterial( {
-					specular: 0x030303,
-					map: clothTexture3,
-					side: THREE.BackSide, //modif Alex
-					alphaTest: 0.5
-				} );				
-				// cloth material 4
-				var clothTexture4 = loader.load( 'dos_blanc.png' );
+				} );
+				// cloth material faire
+				var clothTexture4 = loader.load( '002.png' );
 				clothTexture4.wrapS = clothTexture4.wrapT = THREE.RepeatWrapping;
 				clothTexture4.anisotropy = 16;
 				var clothMaterial4 = new THREE.MeshPhongMaterial( {
@@ -199,17 +224,22 @@
 					uniforms: uniforms,
 					vertexShader: vertexShader,
 					fragmentShader: fragmentShader,
-					side: THREE.DoubleSide
+					side: THREE.FrontSide
+				} );
+				object.children[1].customDepthMaterial = new THREE.ShaderMaterial( {
+					uniforms: uniforms,
+					vertexShader: vertexShader,
+					fragmentShader: fragmentShader,
+					side: THREE.BackSide
 				} );
 				//Alex Select Tee
-				object.children[0].name = "number 1";
-				object.children[1].name = "number 1";
+				object.name = "001";
 				objects.push( object.children[0] );
 				objects.push( object.children[1] );
 				// cloth mesh alex
-				var materials = [clothMaterial , clothMaterial2 ];
+				var materials = [clothMaterial4 , clothMaterial2 ];
 				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
-				object.position.set( -375, 0, 0 );
+				object.position.set( -espaceEntreTeesX, 0, 0 );
 				object.children[0].castShadow = true;
 				object.children[1].castShadow = true;
 				scene.add( object );
@@ -217,95 +247,79 @@
 					uniforms: uniforms,
 					vertexShader: vertexShader,
 					fragmentShader: fragmentShader,
-					side: THREE.DoubleSide
+					side: THREE.FrontSide
 				} );
-				//Alex Select Tee
-				object.children[0].name = "number 2";
-				object.children[1].name = "number 2";
-				objects.push( object.children[0] );
-				objects.push( object.children[1] );
-				// cloth mesh alex 2
-				var materials = [clothMaterial3 , clothMaterial4 ];
-				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
-				object.position.set( 0, 0, -1000 );
-				object.children[0].castShadow = true;
-				object.children[1].castShadow = true;
-				scene.add( object );
-				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
+				object.children[1].customDepthMaterial = new THREE.ShaderMaterial( {
 					uniforms: uniforms,
 					vertexShader: vertexShader,
 					fragmentShader: fragmentShader,
-					side: THREE.DoubleSide
+					side: THREE.BackSide
 				} );
 				//Alex Select Tee
-				object.children[0].name = "number 3";
-				object.children[1].name = "number 3";
+				object.name = "002";
 				objects.push( object.children[0] );
 				objects.push( object.children[1] );
-				// cloth mesh alex 3
-				var materials = [clothMaterial3 , clothMaterial4 ];
-				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
-				object.position.set( -375, 0, -1000 );
-				object.children[0].castShadow = true;
-				object.children[1].castShadow = true;
-				scene.add( object );
-				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
-					uniforms: uniforms,
-					vertexShader: vertexShader,
-					fragmentShader: fragmentShader,
-					side: THREE.DoubleSide
-				} );
-				//Alex Select Tee
-				object.children[0].name = "number 4";
-				object.children[1].name = "number 4";
-				objects.push( object.children[0] );
-				objects.push( object.children[1] );
-				// sphere
-				var ballGeo = new THREE.SphereGeometry( ballSize, 20, 20 );
-				var ballMaterial = new THREE.MeshPhongMaterial( { color: 0xaaaaaa } );
-				sphere = new THREE.Mesh( ballGeo, ballMaterial );
-				sphere.castShadow = true;
-				sphere.receiveShadow = true;
-				scene.add( sphere );
+                //3RD TEE
+                createTee('003',0,375,0);
+                createStructure(0,375,0);
+                createTee('004',0,750,0);
+                createStructure(0,750,0);
+                createTee('005',-250,750,0);
+                createStructure(250,750,0);
+                createTee('006',-500,750,0);
+                createStructure(500,750,0);
+                createTee('007',-750,750,0);
+                createStructure(750,750,0);
+                createTee('008',-1000,750,0);
+                createStructure(1000,750,0);
+                createTee('009',-1250,750,0);
+                createStructure(1250,750,0);
+                createTee('010',-1250,375,0);
+                createStructure(1250,375,0);
 				// ground
-				//var groundTexture = loader.load( 'https://threejs.org/examples/textures/terrain/grasslight-big.jpg' );
-				//groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
-				//groundTexture.repeat.set( 25, 25 );
-				//groundTexture.anisotropy = 16;
-				//var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, map: groundTexture } );
-				//var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 20000, 20000 ), groundMaterial );
-				//mesh.position.y = - 250;
-				//mesh.rotation.x = - Math.PI / 2;
-				//mesh.receiveShadow = true;
-				//scene.add( mesh );
-				//Alex ocean
-				waterNormals = new THREE.TextureLoader().load( 'waternormals.jpg' );
-				waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
-
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				water = new THREE.Water( renderer, camera, scene, {
-					textureWidth: 512,
-					textureHeight: 512,
-					waterNormals: waterNormals,
-					alpha: 	1.0,
-					sunDirection: light.position.clone().normalize(),
-					sunColor: 0xffffff,
-					waterColor: 0x001e0f,
-					distortionScale: 50.0,
-					fog: scene.fog != undefined
-				} );
-
-
-				var mirrorMesh = new THREE.Mesh(
-					new THREE.PlaneBufferGeometry( parameters.width * 500, parameters.height * 500 ),
-					water.material
-				);
-
-				mirrorMesh.add( water );
-				mirrorMesh.position.setY(-250);
-				mirrorMesh.rotation.x = - Math.PI * 0.5;
-				scene.add( mirrorMesh );
-
+				var groundTexture = loader.load( 'grasslight-big.jpg' );
+				groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
+				groundTexture.repeat.set( 50, 50 );
+				groundTexture.anisotropy = 16;
+				var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, map: groundTexture } );
+				var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 40000, 40000 ), groundMaterial );
+				mesh.position.y = - 250;
+				mesh.rotation.x = - Math.PI / 2;
+				mesh.receiveShadow = true;
+				scene.add( mesh );
+                //Add to cart plane
+                var addToCartTexture = loader.load( 'cart.png' );
+				var addToCartMaterial = new THREE.MeshPhongMaterial( {map: addToCartTexture, transparent:true} );
+				cartIcon = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), addToCartMaterial );
+				cartIcon.position.y = 150 ;
+				cartIcon.position.x = - 83.333 +20 ;
+				cartIcon.rotation.x = - Math.PI;
+				cartIcon.rotation.z = Math.PI;
+                cartIcon.name="cartIcon";
+                objects.push(cartIcon);
+                cartIcon.visible=false;
+				scene.add( cartIcon );
+                var sizeSelectorTexture = loader.load( 'size_selector.png' );
+				var sizeSelectorMaterial = new THREE.MeshPhongMaterial( {map: sizeSelectorTexture, transparent:true} );
+				sizeSelector = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), sizeSelectorMaterial );
+				sizeSelector.position.y = 150 ;
+				sizeSelector.position.x = 83.333 -20 ;
+				sizeSelector.rotation.x = - Math.PI;
+				sizeSelector.rotation.z = Math.PI;
+                sizeSelector.name="sizeSelector";
+                objects.push(sizeSelector);
+                sizeSelector.visible=false;
+				scene.add( sizeSelector );
+                //Size Meshes
+                createSizeMesh('s',1);
+                createSizeMesh('m',2);
+                createSizeMesh('l',3);
+                createSizeMesh('xl',4);
+                //Background Size
+                var sizeBackgroundMaterial = new THREE.MeshPhongMaterial( {color: 0xdcdcdc} );
+                sizeBackground = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), sizeBackgroundMaterial );
+                sizeBackground.visible=false;
+                scene.add(sizeBackground);
 				// poles
 				var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
 				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
@@ -344,116 +358,48 @@
 				var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
 				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
 				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = - 500;
+				mesh.position.x = - 125 - espaceEntreTeesX;
 				mesh.position.y = - 62;
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
 				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = -250;
+				mesh.position.x = 125 - espaceEntreTeesX;
 				mesh.position.y = - 62;
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
 				var mesh = new THREE.Mesh( new THREE.BoxGeometry( 255, 5, 5 ), poleMat );
 				mesh.position.y = - 250 + ( 750 / 2 );
-				mesh.position.x = -375;
+				mesh.position.x = 0 - espaceEntreTeesX;
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
 				var gg = new THREE.BoxGeometry( 10, 10, 10 );
 				var mesh = new THREE.Mesh( gg, poleMat );
 				mesh.position.y = - 250;
-				mesh.position.x = -250;
+				mesh.position.x = 125 - espaceEntreTeesX;
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
 				var mesh = new THREE.Mesh( gg, poleMat );
 				mesh.position.y = - 250;
-				mesh.position.x = - 500;
+				mesh.position.x = - 125 - espaceEntreTeesX;
 				mesh.receiveShadow = true;
 				mesh.castShadow = true;
 				scene.add( mesh );
-				// poles alex 2
-				var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
-				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
-				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = - 125;
-				mesh.position.y = - 62; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = 125;
-				mesh.position.y = - 62; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( new THREE.BoxGeometry( 255, 5, 5 ), poleMat );
-				mesh.position.y = - 250 + ( 750 / 2 ); 
-				mesh.position.z = - 1000; //modif
-				mesh.position.x = 0;
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var gg = new THREE.BoxGeometry( 10, 10, 10 );
-				var mesh = new THREE.Mesh( gg, poleMat );
-				mesh.position.y = - 250; 
-				mesh.position.z = - 1000; //modif
-				mesh.position.x = 125;
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( gg, poleMat );
-				mesh.position.y = - 250; 
-				mesh.position.z = - 1000; //modif
-				mesh.position.x = - 125;
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				// poles alex 3
-				var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
-				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
-				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = - 500;
-				mesh.position.y = - 62; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( poleGeo, poleMat );
-				mesh.position.x = -250;
-				mesh.position.y = - 62; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( new THREE.BoxGeometry( 255, 5, 5 ), poleMat );
-				mesh.position.y = - 250 + ( 750 / 2 );
-				mesh.position.x = -375; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var gg = new THREE.BoxGeometry( 10, 10, 10 );
-				var mesh = new THREE.Mesh( gg, poleMat );
-				mesh.position.y = - 250;
-				mesh.position.x = -250; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
-				var mesh = new THREE.Mesh( gg, poleMat );
-				mesh.position.y = - 250;
-				mesh.position.x = - 500; 
-				mesh.position.z = - 1000; //modif
-				mesh.receiveShadow = true;
-				mesh.castShadow = true;
-				scene.add( mesh );
+				//Text
+				spriteyStore = makeTextSprite( " Cham Corp Store ", { fontsize: 59, borderColor: {r:255, g:255, b:255, a:1.0}, backgroundColor: {r:255, g:255, b:255, a:0.5} } );
+				spriteyStore.position.set(-espaceEntreTeesX/2,400,0);
+				scene.add( spriteyStore );
+                //selectedSprite=spriteyStore;
+				//Shopping Cart Text
+				spriteyCart = makeTextSprite( " My Selection ", { fontsize: 59, borderColor: {r:255, g:255, b:255, a:1.0}, backgroundColor: {r:255, g:255, b:255, a:0.5} } );
+				spriteyCart.position.set(-10000,400,-500);
+				scene.add( spriteyCart );
+                //objects.push(spriteyCart);
 				// renderer
-				//renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.shadowMap.renderSingleSided = false;
@@ -463,18 +409,29 @@
 				renderer.shadowMap.enabled = true;
 				// controls
 				controls = new THREE.OrbitControls( camera, renderer.domElement );
-				controls.target.set(0,0,-500);
+				//controls.target.set(0,0,-500);
+                controls.target.set(spriteyStore.position.x,spriteyStore.position.y/2,spriteyStore.position.z);
 				controls.maxPolarAngle = Math.PI * 0.5;
 				controls.minDistance = 500;
-				controls.maxDistance = 7500;
+				controls.maxDistance = 10000;
 				controls.enablePan = false;
-				camera.lookAt(new THREE.Vector3(0,0,-500)); //test alex
-				controls.update();
+				//camera.lookAt(new THREE.Vector3(0,0,-500)); //test alex
+				camera.position.set(spriteyStore.position.x,spriteyStore.position.y,spriteyStore.position.z-3000);
+                if(2 * Math.tan( THREE.Math.degToRad( camera.fov ) / 2 ) * 3000*camera.aspect <1500){
+                    camera.position.setZ(-1500/(2 * Math.tan( THREE.Math.degToRad( camera.fov ) / 2 )*camera.aspect));
+                }
+				camera.lookAt(spriteyStore.position);
+                controls.update();
 				//controls Alex
 				//var controls = new THREE.FirstPersonControls( camera, renderer.domElement );
     				//controls.lookSpeed = 0.05;
     				//controls.movementSpeed = 50;
 				// performance monitor
+                //MODIF CART CONTROLS
+                controls.maxTargetUp=200;
+                controls.maxTargetDown=200;
+                controls.maxTargetLeft=spriteyCart.position.z;
+                controls.maxTargetRight=spriteyCart.position.z;
 				//Debut Alex Select Tee
 				raycaster = new THREE.Raycaster();
 				mouse = new THREE.Vector2();
@@ -485,7 +442,109 @@
 				container.appendChild( stats.dom );
 				//
 				window.addEventListener( 'resize', onWindowResize, false );
-				sphere.visible = ! true;
+                //Prevent ajax requests from caching
+                $.ajaxSetup({cache : false});
+                //Draw items already in cart
+                $.ajax({
+                    url : '/cartItems', // La ressource ciblée
+                    type : 'GET', // Le type de la requête HTTP.
+                    dataType : 'json',
+                    success : function(response){
+                        console.log('success2');
+                        cart = response;
+                        skuCount=0;
+                        itemsCount=0;
+                        for (var sku in cart) {
+                            skuCount++;
+                            itemsCount+=cart[sku];
+                        }
+                        drawCartItems(cart);
+                        setStripeAmount();
+                        setHTMLForm();
+                    },
+                    error : function(error){
+                        console.log('error2');
+                    }
+                });
+			}
+			//2D Texts
+			function makeTextSprite( message, parameters )
+			{
+				// Alignment enums
+				//THREE.SpriteAlignment = {};
+				//THREE.SpriteAlignment.topLeft = new THREE.Vector2( 1, -1 );
+				if ( parameters === undefined ) parameters = {};
+
+				var fontface = parameters.hasOwnProperty("fontface") ? 
+					parameters["fontface"] : "Arial";
+
+				var fontsize = parameters.hasOwnProperty("fontsize") ? 
+					parameters["fontsize"] : 18;
+
+				var borderThickness = parameters.hasOwnProperty("borderThickness") ? 
+					parameters["borderThickness"] : 4;
+
+				var borderColor = parameters.hasOwnProperty("borderColor") ?
+					parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
+
+				var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?
+					parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
+
+				var spriteAlignment = new THREE.Vector2( 0, 0 );
+
+				var canvas = document.createElement('canvas');
+				canvas.height=128;
+				canvas.width=512;
+				var context = canvas.getContext('2d');
+				context.font = "Bold " + fontsize + "px " + fontface;
+
+				// get size data (height depends only on font size)
+				var metrics = context.measureText( message );
+				var textWidth = metrics.width;
+
+				// background color
+				context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + ","
+											  + backgroundColor.b + "," + backgroundColor.a + ")";
+				// border color
+				context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + ","
+											  + borderColor.b + "," + borderColor.a + ")";
+
+				context.lineWidth = borderThickness;
+				//roundRect(context, borderThickness/2, borderThickness/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
+                roundRect(context, borderThickness/2, borderThickness/2, 508, 124, 10);
+                
+				// text color
+				context.fillStyle = "rgba(0, 0, 0, 1.0)";
+
+                context.textAlign = "center";
+                context.textBaseline = "middle";
+				context.fillText( message, 256, 64,500);
+
+				// canvas contents will be used for a texture
+				var texture = new THREE.CanvasTexture(canvas);
+
+				var spriteMaterial = new THREE.SpriteMaterial({ map: texture});
+				var sprite = new THREE.Sprite( spriteMaterial );
+				sprite.scale.set(400,100,1.0);
+                sprite.name=message;
+				return sprite;	
+			}
+			// function for drawing rounded rectangles
+			function roundRect(ctx, x, y, w, h, r) 
+			{
+			      ctx.beginPath();
+			      ctx.moveTo(x+r, y);
+			      ctx.lineTo(x+w-r, y);
+			      ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+			      ctx.lineTo(x+w, y+h-r);
+			      ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+			      ctx.lineTo(x+r, y+h);
+			      ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+			      ctx.lineTo(x, y+r);
+			      ctx.quadraticCurveTo(x, y, x+r, y);
+			      ctx.closePath();
+			      ctx.fill();
+			      //ctx.stroke();   
 			}
 			//
 			function onWindowResize() {
@@ -515,18 +574,12 @@
 				clothGeometry.computeVertexNormals();
 				clothGeometry.normalsNeedUpdate = true;
 				clothGeometry.verticesNeedUpdate = true;
-				sphere.position.copy( ballPosition );
 				//camera.lookAt( scene.position );
-				//Alex Ocean
-				var time = performance.now() * 0.001;
-				water.material.uniforms.time.value += 1.0 / 60.0;
-				water.render();
-				//end Alex Ocean
 				renderer.render( scene, camera );
 			}
 			function onDocumentTouchStart( event ) {
 				event.preventDefault();
-				if(event.target.id=="nextItem"){
+				if(event.target.id=="goToStoreButton" || event.target.id=="goToCartButton" || event.target.id=="nextItem" || event.target.id=="wind" || event.target.parentElement.id=="form" || event.target.parentElement.parentElement.id =="form"){
 					event.target.click();
 				}
 				else{
@@ -541,25 +594,606 @@
 				mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
 				raycaster.setFromCamera( mouse, camera );
 				for (var i = 0; i < objects.length; i++) {
-					objects[i].geometry.computeBoundingSphere();
+                    if(objects[i].type=="Mesh"){
+                        objects[i].geometry.computeBoundingSphere();
+                    }
 				}
 				var intersects = raycaster.intersectObjects( objects );
 				if ( intersects.length > 0 ) {
-					console.log("hit");
-					console.log(intersects[0].object.name);
-					//alert("hit"+intersects[0].object.name);
-					document.getElementById("selected").innerHTML = "| " + intersects[0].object.name + " is selected";
-					camera.lookAt(intersects[0].object.parent.position);
-					controls.target= intersects[0].object.parent.position.clone();
-					if(intersects[0].object.name == "number 3" || intersects[0].object.name == "number 4"){
-						camera.position.set(intersects[0].object.parent.position.x, intersects[0].object.parent.position.y + 300, intersects[0].object.parent.position.z + 900);
-					}
-					else{
-						camera.position.set(intersects[0].object.parent.position.x, intersects[0].object.parent.position.y + 300, intersects[0].object.parent.position.z - 900);
-					}
-					controls.update();
+                    console.log(intersects[0].object.name);
+                    if(intersects[0].object.name=="sizeSelector"){
+                        //removeSelectedSpriteFromIntersectionObjects("sizeSelector");
+                        sizeSelector.visible=false;
+                        for (var i = 0; i < sizes.length; i++) {
+                        sizes[i].visible=true;
+                        }
+                    }
+                    else if(intersects[0].object.name=="s" ||intersects[0].object.name=="m" ||intersects[0].object.name=="l" ||intersects[0].object.name=="xl"){
+                        setBackgroundFromSelectedSize(intersects[0].object.name);
+                    }
+                    else if(intersects[0].object.name=="cartIcon"){
+                        addToCart(selectedTee.name,sizeSelected);
+                    }
+                    else if(intersects[0].object.name.substr(0,5)=="cross"){
+                        var sku = intersects[0].object.name.substr(5,10);
+                        removeFromCart(sku);
+                        itemsCount-= cart[sku];
+                        cart[sku]=0;
+                        setStripeAmount();
+                        setHTMLForm();
+                        removeFromGraphicCart(sku);
+                        shiftCartItemsAfterDelete(150,sku);
+                    }
+                    else if(intersects[0].object.type=="Mesh"){
+                        setSelectedProduct(intersects[0].object.parent);
+                    }
+//                    else if(intersects[0].object.type=="Sprite"){
+//                        if(intersects[0].object.name==" My Selection "){
+//                            goToCart();
+//                        }
+//                        else if(intersects[0].object.name==" Cham Corp Store "){
+//                            goToStore();
+//                        }
+//                    }
 				}
 			}
+			function addToCart( productname , sizeName ) {
+                console.log("addToCart");
+                if(sizeName==''){
+                    sizeSelector.visible=false;
+                    for (var i = 0; i < sizes.length; i++) {
+                        sizes[i].visible=true;
+                    }
+                    return;
+                }
+                hideCartIcon();
+//				var spriteyprod = makeTextSprite( productname, { fontsize: 72, borderColor: {r:255, g:0, b:0, a:1.0}, backgroundColor: {r:255, g:100, b:100, a:0.8} } );
+//				spriteyprod.position.set(-10000,300,-500);
+//				scene.add( spriteyprod );
+                
+                $.ajax({
+                    url : '/ajax', // La ressource ciblée
+                    type : 'POST', // Le type de la requête HTTP.
+                    data : "variable="+productname+sizeName,
+                    dataType : 'json',
+                    success : function(response){
+                        console.log('success');
+                        if(response==1){
+                            cart[productname+sizeName]=1;
+                            drawNewCartItem(productname,sizeName);
+                            skuCount++;
+                        }
+                        else{
+                            cart[productname+sizeName]++;
+                            updateItemQuantity(productname,sizeName);
+                        }
+                        itemsCount++;
+                        setStripeAmount();
+                        setHTMLForm();
+                        goToCart();
+                    },
+                    error : function(error){
+                        console.log('error');
+                    }
+                });
+                
+//				const req = new XMLHttpRequest();
+//				req.open('POST', '/ajax', true);
+//				req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//				req.send("variable="+productname+sizeName);
+			}
+			function goToCart() {
+                console.log("goToCart");
+                $.ajax({
+                    url : '/cartItems', // La ressource ciblée
+                    type : 'GET', // Le type de la requête HTTP.
+                    dataType : 'json',
+                    success : function(response){
+                        console.log('success2');
+                        //drawCartItems(response);
+                    },
+                    error : function(error){
+                        console.log('error2');
+                    }
+                });
+                removeSelectedProduct();
+                hideCartIcon();
+                resetSizeSelected()
+                hideSizes();
+                hideSizeSelector();
+                //reAddSelectedSpriteToIntersectionObjects();
+                //selectedSprite=spriteyCart;
+                //removeSelectedSpriteFromIntersectionObjects(spriteyCart.name);
+				document.getElementById("goToCartButton").innerHTML='Go back to store';
+				document.getElementById("goToCartButton").setAttribute('onclick','goToStore();');
+				document.getElementById("form").removeAttribute("hidden");
+                setCartControls();
+				camera.lookAt(spriteyCart.position);
+				controls.target.set(spriteyCart.position.x,spriteyCart.position.y-200,spriteyCart.position.z);
+				camera.position.set(spriteyCart.position.x-2000,spriteyCart.position.y-200,spriteyCart.position.z);
+				controls.update();
+			}
+			function goToStore() {
+                console.log("goToStore");
+                removeSelectedProduct();
+                hideCartIcon();
+                resetSizeSelected()
+                hideSizes();
+                hideSizeSelector();
+                //reAddSelectedSpriteToIntersectionObjects();
+                //selectedSprite=spriteyStore;
+                //removeSelectedSpriteFromIntersectionObjects(spriteyStore.name);
+				document.getElementById("goToCartButton").innerHTML='Go to cart';
+				document.getElementById("goToCartButton").setAttribute('onclick','goToCart();');
+				document.getElementById("form").setAttribute("hidden","");
+                setStoreControls();
+                controls.target.set(spriteyStore.position.x,spriteyStore.position.y/2,spriteyStore.position.z);
+				camera.position.set(spriteyStore.position.x,spriteyStore.position.y,spriteyStore.position.z-3000);
+                if(2 * Math.tan( THREE.Math.degToRad( camera.fov ) / 2 ) * 3000*camera.aspect <1500){
+                    camera.position.setZ(-1500/(2 * Math.tan( THREE.Math.degToRad( camera.fov ) / 2 )*camera.aspect));
+                }
+				camera.lookAt(spriteyStore.position);
+				controls.update();
+			}
+			function setProductText(productName) {
+                console.log("setProductText");
+				document.getElementById("selected").innerHTML = productName + " is selected";
+				document.getElementById("goToStoreButton").removeAttribute("hidden");
+				document.getElementById("goToStoreSeparator").removeAttribute("hidden");
+			}
+			function setSelectedProduct(product) {
+                console.log("setSelectedProduct");
+				document.getElementById("goToCartButton").innerHTML='Go to cart';
+				document.getElementById("goToCartButton").setAttribute('onclick','goToCart();');
+				document.getElementById("form").setAttribute("hidden","");
+                hideSizes();
+                resetSizeSelected()
+                moveSizesAndCartIcon(product.position);
+                showSizeSelector();
+                reAddSelectedProductToIntersectionObjects();
+                //reAddSelectedSpriteToIntersectionObjects();
+				selectedTee = product;
+                setProductText(product.name);
+                removeSelectedProductFromIntersectionObjects(product.name);
+                setStoreControls();
+				camera.lookAt(product.position);
+				controls.target= product.position.clone();
+                camera.position.set(product.position.x, product.position.y + 300, product.position.z - 900);
+				controls.update();
+			}
+			function removeProductText() {
+                console.log("removeProductText");
+				document.getElementById("selected").innerHTML = "";
+				document.getElementById("selectedSizeSpan").innerHTML = "";
+				document.getElementById("goToStoreSeparator").setAttribute("hidden","");
+				document.getElementById("goToStoreButton").setAttribute("hidden","");
+			}
+			function removeSelectedProductFromIntersectionObjects(productName) {
+                console.log("removeSelectedProductFromIntersectionObjects");
+                for (var i = 0; i < objects.length; i++) {
+					if(objects[i].parent.name == productName){
+                        objects.splice(i,2);
+                        break;
+                    }
+				}
+			}
+			function reAddSelectedProductToIntersectionObjects() {
+                console.log("reAddSelectedProductToIntersectionObjects");
+                if(selectedTee){
+                    objects.push(selectedTee.children[0]);
+                    objects.push(selectedTee.children[1]);
+                    selectedTee=null;
+                }
+			}
+			function removeSelectedProduct() {
+                console.log("removeSelectedProduct");
+                removeProductText();
+                reAddSelectedProductToIntersectionObjects();
+			}
+			function removeSelectedSpriteFromIntersectionObjects(spriteName) {
+                console.log("removeSelectedSpriteFromIntersectionObjects");
+                for (var i = 0; i < objects.length; i++) {
+					if(objects[i].name == spriteName){
+                        objects.splice(i,1);
+                        break;
+                    }
+              }
+			}
+			function setBackgroundFromSelectedSize(sizeName) {
+                console.log("setBackgroundFromSelectedSize");
+                for (var i = 0; i < sizes.length; i++) {
+					if(sizes[i].name == sizeName){
+                        sizeBackground.position.set(sizes[i].position.x,sizes[i].position.y,sizes[i].position.z) ;
+                        sizeBackground.rotation.set(sizes[i].rotation.x,sizes[i].rotation.y,sizes[i].rotation.z) ;
+				        document.getElementById("selectedSizeSpan").innerHTML = " in size " + sizeName;
+                        sizeBackground.visible=true;
+                        sizeSelected=sizeName;
+                        break;
+                    }
+              }
+			}
+			function setSizesPositions() {
+                console.log("setSizesPositions");
+                sizeBackground.visible=false;
+                cartIcon.visible=false;
+                for (var i = 0; i < sizes.length; i++) {
+                        sizes[i].visible=false;
+                }
+			}
+			function showSizeSelector() {
+                console.log("showSizeSelector");
+                cartIcon.visible=true;
+                sizeSelector.visible=true;
+			}
+			function hideSizes() {
+                console.log("hideSizes");
+                sizeBackground.visible=false;
+                for (var i = 0; i < sizes.length; i++) {
+                        sizes[i].visible=false;
+                }
+			}
+			function hideCartIcon() {
+                console.log("hideCartIcon");
+                cartIcon.visible=false;
+			}
+			function hideSizeSelector() {
+                console.log("hideSizeSelector");
+                sizeSelector.visible=false;
+			}
+			function resetSizeSelected() {
+                console.log("resetSizeSelected");
+                sizeSelected='';
+			}
+            function createSizeMesh(size,sizeNumber) {
+                console.log("createSizeMesh");
+                var loader = new THREE.TextureLoader();
+                var sizeTexture = loader.load( size + '_size.png' );
+				var sizeMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff,map: sizeTexture, transparent:true} );
+                var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), sizeMaterial );
+				mesh.position.y = 150 ;
+				mesh.rotation.x = - Math.PI;
+				mesh.rotation.z = Math.PI;
+                mesh.name=size;
+                mesh.visible=false;
+                sizes.push(mesh);
+                objects.push(mesh);
+                scene.add(mesh);
+            }
+            function moveSizesAndCartIcon(productPosition) {
+                console.log("moveSizesAndCartIcon");
+                for (var i = 0; i < sizes.length; i++) {
+                    sizes[i].position.x=productPosition.x + 83.333 +20 -40*i;
+                    sizes[i].position.y=productPosition.y +150;
+                    sizes[i].position.z=productPosition.z;
+                }
+                sizeSelector.position.x=productPosition.x + 83.333 -20;
+                sizeSelector.position.y=productPosition.y +150;
+                sizeSelector.position.z=productPosition.z;
+                cartIcon.position.x=productPosition.x - 83.333 +20;
+                cartIcon.position.y=productPosition.y +150;
+                cartIcon.position.z=productPosition.z;
+            }
+			function drawCartItems(cartItems) {
+                console.log("drawCartItems");
+                var loader = new THREE.TextureLoader();
+                var skuCounter=0;
+                var textureCross = loader.load( 'cross.png' );
+				var materialCross = new THREE.MeshBasicMaterial( {map: textureCross, transparent:true} );
+                if(skuCount>0){
+                    controls.maxTargetLeft=spriteyCart.position.z - 150 * (skuCount -1);
+                    controls.maxTargetRight=spriteyCart.position.z + 150 * (skuCount -1);
+                }
+                for (var sku in cartItems) {
+                    var item = sku.substring(0,3);
+                    var size = sku.substring(3,5);
+                    var texture = loader.load( item + '.png' );
+				    var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true} );
+                    var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 25, 25 ), material );
+                    mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 200,spriteyCart.position.z + skuCounter*300 - 150 * (skuCount -1));
+				    mesh.rotation.y = - Math.PI/2;
+				    mesh.rotation.z = - Math.PI;
+                    mesh.name = item+size;
+                    scale= 7 + sizesChart[size];
+                    mesh.scale.set(scale,scale,scale);
+                    scene.add(mesh);
+                    cartItemMeshes.push(mesh);
+                    mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), materialCross );
+				    mesh.rotation.y = - Math.PI/2;
+				    mesh.rotation.z = - Math.PI;
+                    mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 350,spriteyCart.position.z + skuCounter*300 - 150 * (skuCount -1) + 60);
+                    scene.add(mesh);
+                    mesh.name="cross"+item+size;
+                    cartItemMeshes.push(mesh);
+                    objects.push(mesh);
+                    mesh = sizes[sizesChart[size]].clone();
+                    mesh.rotation.y = - Math.PI/2;
+                    mesh.rotation.z = - Math.PI;
+                    mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 350,spriteyCart.position.z + skuCounter*300 - 150 * (skuCount -1));
+                    mesh.visible=true;
+                    mesh.name="size"+item+size;
+                    cartItemMeshes.push(mesh);
+                    scene.add(mesh);
+                    var texture = loader.load( 'qt' + cart[item+size] + '.png' );
+                    var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true} );
+                    mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), material );
+                    mesh.rotation.y = - Math.PI/2;
+                    mesh.rotation.z = - Math.PI;
+                    mesh.rotation.x = - Math.PI;
+                    mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 350,spriteyCart.position.z + skuCounter*300 - 150 * (skuCount-1) -60);
+                    scene.add(mesh);
+                    mesh.name="qt"+item+size;
+                    cartItemMeshes.push(mesh);
+                    skuCounter++;
+                }
+			}
+			function drawNewCartItem(item,size) {
+                console.log("drawNewCartItem");
+                shiftCartItems(150);
+                var loader = new THREE.TextureLoader();
+                var texture = loader.load( item + '.png' );
+                var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true} );
+                var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 25, 25 ), material );
+                mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 200,spriteyCart.position.z + skuCount*300 - 150 * skuCount);
+                mesh.rotation.y = - Math.PI/2;
+                mesh.rotation.z = - Math.PI;
+                mesh.name = item+size;
+                scale= 7 + sizesChart[size];
+                mesh.scale.set(scale,scale,scale);
+                scene.add(mesh);
+                cartItemMeshes.push(mesh);
+                if(itemsCount>0){
+                    controls.maxTargetLeft-=150;
+                    controls.maxTargetRight+=150;
+                }
+                var textureCross = loader.load( 'cross.png' );
+				var materialCross = new THREE.MeshBasicMaterial( {map: textureCross, transparent:true} );
+                mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), materialCross );
+                mesh.rotation.y = - Math.PI/2;
+                mesh.rotation.z = - Math.PI;
+                mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 350,spriteyCart.position.z + skuCount*300 - 150 * skuCount +60);
+                scene.add(mesh);
+                mesh.name="cross"+item+size;
+                cartItemMeshes.push(mesh);
+                objects.push(mesh);
+                mesh = sizes[sizesChart[size]].clone();
+                mesh.rotation.y = - Math.PI/2;
+                mesh.rotation.z = - Math.PI;
+                mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 350,spriteyCart.position.z + skuCount*300 - 150 * skuCount);
+                mesh.visible=true;
+                mesh.name="size"+item+size;
+                cartItemMeshes.push(mesh);
+                scene.add(mesh);
+                var texture = loader.load( 'qt' + cart[item+size] + '.png' );
+				var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true} );
+                mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 30, 30 ), material );
+                mesh.rotation.y = - Math.PI/2;
+                mesh.rotation.z = - Math.PI;
+                mesh.rotation.x = - Math.PI;
+                mesh.position.set(spriteyCart.position.x,spriteyCart.position.y - 350,spriteyCart.position.z + skuCount*300 - 150 * skuCount -60);
+                scene.add(mesh);
+                mesh.name="qt"+item+size;
+                cartItemMeshes.push(mesh);
+			}
+			function shiftCartItems(shift) {
+                console.log("shiftCartItems");
+                for (var i = 0; i < cartItemMeshes.length; i++) {
+                    cartItemMeshes[i].position.z-=shift;
+                }
+			}
+			function shiftCartItemsAfterDelete(standardShift,sku) {
+                console.log("shiftCartItemsAfterDelete");
+                var index=1000;
+                for (var i = 0; i < cartItemMeshes.length; i++) {
+                    cartItemMeshes[i].position.z+=standardShift;
+                    if(cartItemMeshes[i].name==sku){
+                        index=i;
+                    }
+                    if(i>index+3){
+                        cartItemMeshes[i].position.z-=300;
+                    }
+                }
+                cartItemMeshes.splice(index,4);
+			}
+            function setStripeAmount(){
+                console.log("setStripeAmount");
+                $('[class*="stripe"]').remove();
+                if(itemsCount>0){
+                    var script= document.createElement('script');
+                    script.type= 'text/javascript';
+                    script.src= '//checkout.stripe.com/v2/checkout.js';
+                    script.setAttribute("data-key","pk_test_DfOWIh4hmFl3Hw8Fx2Rx6mVN");
+                    script.setAttribute("data-locale","auto");
+                    script.setAttribute("data-description", "Chemises en T");
+                    script.setAttribute("data-amount", 25*itemsCount*100);
+                    script.className="stripe-button";
+                    $("#form").append(script);
+                }
+            }
+            function setHTMLForm(){
+                console.log("setHTMLForm");
+                $("#priceLabel").text("Amount: $" + itemsCount*25 + ".00");
+                $("#amountForm").attr("value",itemsCount*25);
+                $("#cartForm").attr("value",JSON.stringify(cart));
+            }
+            function setCartControls(){
+                console.log("setCartControls");
+                controls.enableRotate=false;
+                controls.enablePan=true;
+                controls.mouseButtons = {
+                    ORBIT: THREE.MOUSE.RIGHT,
+                    ZOOM: THREE.MOUSE.MIDDLE,
+                    PAN: THREE.MOUSE.LEFT
+                }
+                controls.enablePanAlexModif=true;
+            }
+            function setStoreControls(){
+                console.log("setStoreControls");
+                controls.enableRotate=true;
+                controls.enablePan=false;
+                controls.mouseButtons = {
+                    ORBIT: THREE.MOUSE.LEFT,
+                    ZOOM: THREE.MOUSE.MIDDLE,
+                    PAN: THREE.MOUSE.RIGHT
+                }
+                controls.enablePanAlexModif=false;
+            }
+            function removeFromCart(sku){
+                console.log("removeFromCart");
+                $.ajax({
+                    url : '/delete', // La ressource ciblée
+                    type : 'POST', // Le type de la requête HTTP.
+                    data : "variable="+sku,
+                    dataType : 'json',
+                    success : function(response){
+                        skuCount--;
+                        console.log('delete success');
+                    },
+                    error : function(error){
+                        console.log('error');
+                    }
+                });
+            }
+            function removeFromGraphicCart(sku){
+                console.log("removeFromGraphicCart");
+                console.log(sku);
+                scene.getObjectByName('qt'+sku).visible=false;
+                scene.getObjectByName('cross'+sku).visible=false;
+                scene.getObjectByName('size'+sku).visible=false;
+                scene.getObjectByName(sku).visible=false;
+                //cleaning size
+                for (var i = 0; i < objects.length; i++) {
+					if(objects[i].name == 'cross'+sku){
+                        objects.splice(i,1);
+                        break;
+                    }
+                }
+                var obj = scene.getObjectByName('qt'+sku);
+                scene.remove(obj);
+                obj.geometry.dispose();
+                var texture = obj.material.map;
+                obj.material.dispose();
+                texture.dispose();
+                obj = scene.getObjectByName(sku);
+                scene.remove(obj);
+                obj.geometry.dispose();
+                var texture = obj.material.map;
+                obj.material.dispose();
+                texture.dispose();
+                obj = scene.getObjectByName('cross'+sku);
+                scene.remove(obj);
+                obj.geometry.dispose();
+                var texture = obj.material.map;
+                obj.material.dispose();
+                texture.dispose();
+                obj = scene.getObjectByName('size'+sku);
+                scene.remove(obj);
+                if(itemsCount>0){
+                    controls.maxTargetLeft+=150;
+                    controls.maxTargetRight-=150;
+                }
+            }
+            function updateItemQuantity(item,size){
+                console.log("updateItemQuantity "+item+size);
+                var loader = new THREE.TextureLoader();
+                loader.load( 'qt' + cart[item+size] + '.png' ,function(texture){
+                    console.log("updateItemQuantity texture loaded");
+                    var material = new THREE.MeshBasicMaterial( {map: texture, transparent:true} );
+                    var obj = scene.getObjectByName('qt'+ item + size);
+                    var oldTexture = obj.material.map;
+                    obj.material.dispose();
+                    oldTexture.dispose();
+                    obj.material=material;
+                },function(xhr){
+                    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+                },function(xhr){
+                    console.error( 'An error happened' );
+                });
+            }
+            function createTee(item,x,y,z){
+				// cloth material
+				var loader = new THREE.TextureLoader();
+				var clothTexture = loader.load( item + '.png' );
+				clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
+				clothTexture.anisotropy = 16;
+				var clothMaterial = new THREE.MeshPhongMaterial( {
+					specular: 0x030303,
+					map: clothTexture,
+					side: THREE.FrontSide, //modif Alex
+					alphaTest: 0.5
+				} );
+				//cloth back white material Alex
+				var clothTexture2 = loader.load( 'dos_blanc.png' );
+				clothTexture2.wrapS = clothTexture2.wrapT = THREE.RepeatWrapping;
+				clothTexture2.anisotropy = 16;
+				var clothMaterial2 = new THREE.MeshPhongMaterial( {
+					specular: 0x030303,
+					map: clothTexture2,
+					side: THREE.BackSide,
+					alphaTest: 0.5
+				} );
+                //material
+                var materials = [clothMaterial , clothMaterial2 ];
+				object = THREE.SceneUtils.createMultiMaterialObject( clothGeometry, materials );
+				var uniforms = { texture:  { value: clothTexture } };
+				var vertexShader = document.getElementById( 'vertexShaderDepth' ).textContent;
+				var fragmentShader = document.getElementById( 'fragmentShaderDepth' ).textContent;
+				//modif Alex ends
+				object.position.set( x, y, z );
+				object.children[0].castShadow = true;
+				object.children[1].castShadow = true;
+				scene.add( object );
+				object.children[0].customDepthMaterial = new THREE.ShaderMaterial( {
+					uniforms: uniforms,
+					vertexShader: vertexShader,
+					fragmentShader: fragmentShader,
+					side: THREE.FrontSide
+				} );
+				object.children[1].customDepthMaterial = new THREE.ShaderMaterial( {
+					uniforms: uniforms,
+					vertexShader: vertexShader,
+					fragmentShader: fragmentShader,
+					side: THREE.BackSide
+				} );
+				//Alex Select Tee
+				object.name = item;
+				objects.push( object.children[0] );
+				objects.push( object.children[1] );
+            }
+            function createStructure(posX,posY,posZ){
+                var poleGeo = new THREE.BoxGeometry( 5, 375, 5 );
+				var poleMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 100 } );
+				var mesh = new THREE.Mesh( poleGeo, poleMat );
+				mesh.position.x = - 125 - posX;
+				mesh.position.y = - 62 + posY;
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var mesh = new THREE.Mesh( poleGeo, poleMat );
+				mesh.position.x = 125 - posX;
+				mesh.position.y = - 62+ posY;
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var mesh = new THREE.Mesh( new THREE.BoxGeometry( 255, 5, 5 ), poleMat );
+				mesh.position.y = - 250 + ( 750 / 2 )+ posY;
+				mesh.position.x = 0 - posX;
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var gg = new THREE.BoxGeometry( 10, 10, 10 );
+				var mesh = new THREE.Mesh( gg, poleMat );
+				mesh.position.y = - 250+ posY;
+				mesh.position.x = 125 - posX;
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+				var mesh = new THREE.Mesh( gg, poleMat );
+				mesh.position.y = - 250+ posY;
+				mesh.position.x = - 125 - posX;
+				mesh.receiveShadow = true;
+				mesh.castShadow = true;
+				scene.add( mesh );
+            }
 		</script>
 	</body>
 </html>
